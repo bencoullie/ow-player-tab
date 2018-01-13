@@ -1,0 +1,23 @@
+{
+  "short_name": "OW Companion",
+  "name": "React Extension",
+  "description": "Have a cry about your stats every time you open a new tab!",
+  "manifest_version": 2,
+  "icons": {
+    "16": "images/ow-icon-16.png",
+    "48": "images/ow-icon-48.png",
+    "128": "images/ow-icon-128.png"
+  },
+  "browser_action": {
+    "default_icon": "images/ow-icon-128.png",
+    "default_title": "Overwatch Companion"
+  },
+  "version": "1.0",
+  "permissions": [
+    "management",
+    "tabs"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}

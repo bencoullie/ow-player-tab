@@ -9,7 +9,7 @@ class GameTab extends Component {
   }
 
   componentDidMount () {
-    fetch('http://owdata.herokuapp.com/profile/pc/us/VoA-1535').then(response => {
+    fetch('http://ow-api.herokuapp.com/profile/pc/us/VoA-1535').then(response => {
       response.json().then(data => {
         this.setState({ profile: data })
       })

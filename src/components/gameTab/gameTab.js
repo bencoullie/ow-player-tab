@@ -1,42 +1,31 @@
-import './gameTab.css'
-
 import React, { Component } from 'react'
+
+// import LoadScreen from './loadScreen'
+import MainContent from '../mainContent/mainContent'
 
 class GameTab extends Component {
   constructor () {
     super()
-    this.state = {}
   }
 
-  componentDidMount () {
-    fetch('http://ow-api.herokuapp.com/profile/pc/us/VoA-1535')
-      .then(response => {
-        response.json().then(data => {
-          this.setState({ profile: data })
-        })
-      })
-      .then(() => {
-        console.log('Profile info:', this.state.profile)
-      })
-  }
-
+  // {ready ? <MainContent /> : <LoadScreen/>}
   render () {
-    const ready = this.state && this.state.profile
-
-    return (
-      <div className='gameTab-wrapper'>
-        <div>
-          <h1>{ready && this.state.profile.username}</h1>
-          <h1>Season stats:</h1>
-          <h1>Time in Comp: {ready && this.state.profile.playtime.competitive}</h1>
-          <h1>Time in Quickplay: {ready && this.state.profile.playtime.quickplay}</h1>
-          <canvas id='myChart' />
-          <h1>Rank:</h1>
-          <img src={ready && this.state.profile.competitive.rank_img} />
-        </div>
-      </div>
-    )
+    return <MainContent />
   }
 }
 
 export default GameTab
+
+// <div>
+// <div>
+//   <h1>{this.state.profile.username}</h1>
+//   <h1>Time in Comp: {this.state.profile.playtime.competitive}</h1>
+//   <img src={this.state.profile.competitive.rank_img} alt='current rank' />
+// </div>
+// <div className='chart-grid-container'>
+//   <canvas id='myChart' className='chart-grid-child' />
+//   <div className='chart-grid-child b'>B</div>
+//   <div className='chart-grid-child c'>C</div>
+//   <div className='chart-grid-child d'>D</div>
+// </div>
+// </div>

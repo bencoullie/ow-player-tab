@@ -1,0 +1,24 @@
+/* font stlyes */
+.main-content-wrapper h1 {
+  font-family: 'Reenie Beanie', cursive;
+  font-weight: 300;
+  font-size: 56px;
+  padding: 10px;
+  line-height: 10px;
+}
+
+.chart-grid-container {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-gap: 10px;
+  background-color: #fff;
+  color: #444;
+}
+
+.chart-grid-child {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+}

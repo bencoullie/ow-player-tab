@@ -1,21 +1,26 @@
 /* font stlyes */
-.main-content-wrapper h1 {
+.header {
   font-family: 'Reenie Beanie', cursive;
   font-weight: 300;
+  color: #333;
+}
+
+.header--primary {
   font-size: 56px;
   padding: 10px;
   line-height: 10px;
 }
 
-.chart-grid-container {
+/* grid styles */
+.grid {
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
+  /* grid-template-columns: 25% 25% 25% 25%;
   grid-gap: 10px;
   background-color: #fff;
-  color: #444;
+  color: #444; */
 }
 
-.chart-grid-child {
+.grid__tile {
   background-color: #444;
   color: #fff;
   border-radius: 5px;

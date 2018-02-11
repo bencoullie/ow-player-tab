@@ -4,10 +4,6 @@ import React, { Component } from 'react'
 import MainContent from '../mainContent/mainContent'
 
 class GameTab extends Component {
-  constructor () {
-    super()
-  }
-
   // {ready ? <MainContent /> : <LoadScreen/>}
   render () {
     return <MainContent />

@@ -1,7 +1,7 @@
 import Chart from 'chart.js'
 
 export default data => {
-  var ctx = document.getElementById('myChart')
+  var ctx = document.getElementById('winLossChart')
   var myDoughnutChart = new Chart(ctx, {
     type: 'doughnut',
     data: {

@@ -2,6 +2,9 @@ import './mainContent.css'
 
 import React, { Component } from 'react'
 
+import { connect } from 'react-redux'
+import { newProfile } from '../../actions/addProfile'
+
 // import winLossChart from '../winLossChart/winLossChart'
 
 class MainContent extends Component {
@@ -78,3 +81,10 @@ class MainContent extends Component {
 }
 
 export default MainContent
+
+// <div className='grid__tile'>
+//   <h1 className='header header--primary'>Win/loss:</h1>
+//   <div className='center'>
+//     <canvas id='winLossChart' />
+//   </div>
+// </div>

@@ -2,8 +2,11 @@ import './mainContent.css'
 
 import React, { Component } from 'react'
 
-import { connect } from 'react-redux'
-import { newProfile } from '../../actions/addProfile'
+// import { connect } from 'react-redux'
+import fetchProfile from '../../services/profileFetcher'
+import fetchStats from '../../services/statsFetcher'
+
+// import { newProfile } from '../../actions/addProfile'
 
 // import winLossChart from '../winLossChart/winLossChart'
 
@@ -11,25 +14,35 @@ class MainContent extends Component {
   constructor () {
     super()
     this.state = {}
+    this.addonStorage = window.chrome.storage
   }
 
   componentDidMount () {
-    // Get profile
-    window.fetch('http://ow-api.herokuapp.com/profile/pc/us/cupchip-2806').then(response => {
-      response.json().then(data => {
-        console.log('profile data: ', data)
-        this.setState({ profile: data })
-      })
-    })
+    const hasAddonStorage = Boolean(this.addonStorage)
 
-    // Get stats
-    window.fetch('http://ow-api.herokuapp.com/stats/pc/us/cupchip-2806').then(response => {
-      response.json().then(data => {
-        console.log('stats data: ', data)
-        this.setState({ stats: data.stats })
-        // winLossChart(data)
+    if (hasAddonStorage) {
+      this.addonStorage.sync.get('battleTag', async resultObject => {
+        let battleTag = resultObject.battleTag
+        const userHasSavedbattleTag = Boolean(battleTag)
+
+        // If the user has not saved a battle tag before
+        if (!userHasSavedbattleTag) {
+          // Get new battletag from user
+          battleTag = prompt('What BattleTag inspires fear among your enemies?')
+
+          // And persist it in chrome addon storage
+          await this.addonStorage.sync.set({ battleTag: battleTag })
+        }
+
+        // Get data with given battleTag
+        const profile = await fetchProfile(battleTag)
+        const stats = await fetchStats(battleTag)
+
+        // Set the assosciated profile to local component state
+        this.setState({ profile: profile })
+        this.setState({ stats: stats })
       })
-    })
+    }
   }
 
   render () {

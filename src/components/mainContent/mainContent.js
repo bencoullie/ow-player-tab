@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
+import loadingAnimation from '../../images/ow-loader.gif'
 
 // import { newProfile } from '../../actions/addProfile'
 
@@ -47,9 +48,26 @@ class MainContent extends Component {
 
   render () {
     const ready = this.state && this.state.profile && this.state.stats
+    const removeFromDom = () => {
+      console.log('removing from dom')
+      const loaderWrapper = document.querySelector('.wrapper')
+      document.querySelector('.background').removeChild(loaderWrapper)
+      console.log('removed from dom')
+    }
+
+    // Remove loader from the dom
+    ready && window.setTimeout(removeFromDom(), 1000)
 
     return (
-      <div>
+      <div className={'background ' + (!ready ? 'background--loading' : 'background--loaded')}>
+        <div className='wrapper center-inner-element'>
+          <img
+            src={loadingAnimation}
+            className={'loader ' + (!ready ? 'loader--loading' : 'loader--loaded')}
+            alt='loading animation'
+          />
+        </div>
+
         {ready &&
           <div className='grid'>
             <div className='grid__tile grid__tile--featured'>
@@ -84,7 +102,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Elims:</h1>
               <h1 className='header header--secondary'>{this.state.stats.combat.competitive[9].value}</h1>
             </div>
-            <div className='grid__tile center icon-wrapper'>
+            <div className='grid__tile center-inner-element icon-wrapper'>
               <i className='fa fa-cog icon icon--setup' />
             </div>
           </div>}

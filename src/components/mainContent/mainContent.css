@@ -67,9 +67,67 @@
   transition: color 0.4s;
 }
 
+/* loading state stlyes */
+
+.loader {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
+.loader--loading {
+  animation: load-animation--initial 3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+.loader--loaded {
+  animation: load-animation--finished 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+.background--loading {
+  background-color: #f1f0ee;
+}
+
+.background--loaded {
+  background-color: white;
+  transition: background-color 1s;
+}
+
+@keyframes load-animation--initial {
+  0%  {
+    top: -20px;
+    filter: brightness(1) blur(0) opacity(1);
+  }
+  100% {
+    top: 0;
+    filter: brightness(0.9) blur(3px) opacity(0.3);
+    height:180px;
+    width: 180px;
+  }
+}
+
+@keyframes load-animation--finished {
+  0%  {
+    filter: opacity(1);
+    top: 0;
+  }
+  100% {
+    filter: opacity(0);
+    top: -20px;
+  }
+}
+
 /* general stlyes */
 
-.center {
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
+.center-inner-element {
   display: flex;
   align-items: center;
   justify-content: center;

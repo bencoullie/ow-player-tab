@@ -49,21 +49,23 @@ class MainContent extends Component {
   render () {
     const ready = this.state && this.state.profile && this.state.stats
     const removeFromDom = () => {
-      console.log('removing from dom')
-      const loaderWrapper = document.querySelector('.wrapper')
-      document.querySelector('.background').removeChild(loaderWrapper)
-      console.log('removed from dom')
+      window.setTimeout(() => {
+        console.log('removing from dom')
+        const loaderWrapper = document.querySelector('.loader')
+        document.querySelector('.background').removeChild(loaderWrapper)
+        console.log('removed from dom')
+        return true
+      }, 1000)
     }
 
-    // Remove loader from the dom
-    ready && window.setTimeout(removeFromDom(), 1000)
+    ready && removeFromDom()
 
     return (
       <div className={'background ' + (!ready ? 'background--loading' : 'background--loaded')}>
-        <div className='wrapper center-inner-element'>
+        <div className='loader center-inner-element'>
           <img
             src={loadingAnimation}
-            className={'loader ' + (!ready ? 'loader--loading' : 'loader--loaded')}
+            className={'loader__image ' + (!ready ? 'loader__image--loading' : 'loader__image--loaded')}
             alt='loading animation'
           />
         </div>

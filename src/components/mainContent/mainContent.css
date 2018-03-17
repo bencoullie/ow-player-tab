@@ -70,18 +70,24 @@
 /* loading state stlyes */
 
 .loader {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+
+.loader__image {
   width: 300px;
   height: 300px;
   position: relative;
 }
 
-.loader--loading {
-  animation: load-animation--initial 3s;
+.loader__image--loading {
+  animation: load-animation--initial 2s;
   animation-fill-mode: forwards;
   animation-timing-function: ease;
 }
 
-.loader--loaded {
+.loader__image--loaded {
   animation: load-animation--finished 1s;
   animation-fill-mode: forwards;
   animation-timing-function: ease;
@@ -104,28 +110,28 @@
   100% {
     top: 0;
     filter: brightness(0.9) blur(3px) opacity(0.3);
-    height:180px;
-    width: 180px;
+    height: 250px;
+    width: 250px;
   }
 }
 
 @keyframes load-animation--finished {
   0%  {
-    filter: opacity(1);
+    height: 230px;
+    width: 230px;
     top: 0;
+    filter: opacity(1);
+    filter: brightness(0.9) blur(3px) opacity(0.3);
   }
   100% {
-    filter: opacity(0);
     top: -20px;
+    filter: brightness(0.8) blur(5px) opacity(0);
+    height: 220px;
+    width: 220px;
   }
 }
 
 /* general stlyes */
-
-.wrapper {
-  width: 100vw;
-  height: 100vh;
-}
 
 .center-inner-element {
   display: flex;

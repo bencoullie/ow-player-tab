@@ -2,6 +2,8 @@ import './mainContent.css'
 
 import React, { Component } from 'react'
 
+// import 'jquery/src/jquery'
+import $ from 'jquery'
 // import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
@@ -16,6 +18,53 @@ class MainContent extends Component {
     super()
     this.state = {}
     this.addonStorage = window.chrome.storage
+  }
+
+  removeLoaderFromDom = () => {
+    window.setTimeout(() => {
+      const loaderWrapper = document.querySelector('.loader')
+      document.querySelector('.background').removeChild(loaderWrapper)
+    }, 1000)
+  }
+
+  changeAccount = async () => {
+    // Get new battletag from user
+    let battleTag = prompt("So you're ready for a change? What's the new BattleTag?")
+
+    this.fetchAndSavePlayerData(battleTag)
+  }
+
+  fetchAndSavePlayerData = async battleTag => {
+    // Get data with given battleTag
+    const profile = await fetchProfile(battleTag)
+    const stats = await fetchStats(battleTag)
+
+    // Set the assosciated profile to local component state
+    this.setState({ profile: profile })
+    this.setState({ stats: stats })
+  }
+
+  loadInGridTiles = () => {
+    const tiles = $('.grid__tile')
+    console.log('being called 1')
+
+    let secondsToDelay = 1
+
+    tiles.each(i => {
+      secondsToDelay += i
+
+      this.delay(secondsToDelay * 1000).addClass('fade-in')
+    })
+
+    // Array.prototype.forEach.call(slides, (tile, i) => {
+    //   console.log('being called 2')
+    //   secondsToDelay += i
+    //   window.setTimeout(() => {
+    //     console.log('being called 3')
+    //     console.log(`seconds delayed by: ${secondsToDelay * 1000}`)
+    //     tile.classList.add('fade-in')
+    //   }, secondsToDelay * 1000)
+    // })
   }
 
   componentDidMount () {
@@ -35,30 +84,16 @@ class MainContent extends Component {
           await this.addonStorage.sync.set({ battleTag: battleTag })
         }
 
-        // Get data with given battleTag
-        const profile = await fetchProfile(battleTag)
-        const stats = await fetchStats(battleTag)
-
-        // Set the assosciated profile to local component state
-        this.setState({ profile: profile })
-        this.setState({ stats: stats })
+        this.fetchAndSavePlayerData(battleTag)
       })
     }
   }
 
   render () {
     const ready = this.state && this.state.profile && this.state.stats
-    const removeFromDom = () => {
-      window.setTimeout(() => {
-        console.log('removing from dom')
-        const loaderWrapper = document.querySelector('.loader')
-        document.querySelector('.background').removeChild(loaderWrapper)
-        console.log('removed from dom')
-        return true
-      }, 1000)
-    }
 
-    ready && removeFromDom()
+    ready && this.removeLoaderFromDom()
+    ready && this.loadInGridTiles()
 
     return (
       <div className={'background ' + (!ready ? 'background--loading' : 'background--loaded')}>
@@ -104,7 +139,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Elims:</h1>
               <h1 className='header header--secondary'>{this.state.stats.combat.competitive[9].value}</h1>
             </div>
-            <div className='grid__tile center-inner-element icon-wrapper'>
+            <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.changeAccount}>
               <i className='fa fa-cog icon icon--setup' />
             </div>
           </div>}

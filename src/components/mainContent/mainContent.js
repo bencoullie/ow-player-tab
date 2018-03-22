@@ -102,7 +102,9 @@ class MainContent extends Component {
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Rank:</h1>
-              <h1 className='header header--secondary'>{this.state.profile.competitive.rank}</h1>
+              <h1 className='header header--secondary'>
+                {this.state.profile.competitive.rank || 'Still qualifying!'}
+              </h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Level:</h1>

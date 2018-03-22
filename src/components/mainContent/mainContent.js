@@ -2,8 +2,6 @@ import './mainContent.css'
 
 import React, { Component } from 'react'
 
-// import 'jquery/src/jquery'
-import $ from 'jquery'
 // import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
@@ -45,26 +43,17 @@ class MainContent extends Component {
   }
 
   loadInGridTiles = () => {
-    const tiles = $('.grid__tile')
-    console.log('being called 1')
+    window.setTimeout(() => {
+      const tiles = document.getElementsByClassName('grid__tile')
 
-    let secondsToDelay = 1
-
-    tiles.each(i => {
-      secondsToDelay += i
-
-      this.delay(secondsToDelay * 1000).addClass('fade-in')
-    })
-
-    // Array.prototype.forEach.call(slides, (tile, i) => {
-    //   console.log('being called 2')
-    //   secondsToDelay += i
-    //   window.setTimeout(() => {
-    //     console.log('being called 3')
-    //     console.log(`seconds delayed by: ${secondsToDelay * 1000}`)
-    //     tile.classList.add('fade-in')
-    //   }, secondsToDelay * 1000)
-    // })
+      let secondsToDelay = 1
+      Array.prototype.forEach.call(tiles, (tile, i) => {
+        secondsToDelay += i
+        window.setTimeout(() => {
+          tile.classList.add('fade-in')
+        }, secondsToDelay * 1000 / 100)
+      })
+    }, 100)
   }
 
   componentDidMount () {
@@ -133,11 +122,11 @@ class MainContent extends Component {
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Damage:</h1>
-              <h1 className='header header--secondary'>{this.state.stats.combat.competitive[3].value}</h1>
+              <h1 className='header header--secondary'>{this.state.stats.combat.competitive[2].value}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Elims:</h1>
-              <h1 className='header header--secondary'>{this.state.stats.combat.competitive[9].value}</h1>
+              <h1 className='header header--secondary'>{this.state.stats.combat.competitive[8].value}</h1>
             </div>
             <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.changeAccount}>
               <i className='fa fa-cog icon icon--setup' />

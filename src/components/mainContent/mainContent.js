@@ -37,8 +37,7 @@ class MainContent extends Component {
     const profile = await fetchProfile(battleTag)
     const stats = await fetchStats(battleTag)
 
-    // Create custom player state object
-    // Helps make certain stats more robust (rely on stat title rather than index)
+    // Grab the parts of the profile and stats we want
     const username = profile.username
     const rank = profile.competitive.rank
     const level = profile.level
@@ -48,7 +47,7 @@ class MainContent extends Component {
     const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     const topHero = stats.top_heroes.competitive[0].hero
 
-    // Set the assosciated profile to local component state
+    // Set the assosciated player data to local component state
     this.setState({
       player: {
         username,

@@ -37,18 +37,32 @@ class MainContent extends Component {
     const profile = await fetchProfile(battleTag)
     const stats = await fetchStats(battleTag)
 
-    // Make certain stats more robust (rely on stat title rather than index)
-    let customStats = Object.assign({ custom: {} }, stats)
-    customStats.custom.healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
-    customStats.custom.heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
-    customStats.custom.eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
+    // Create custom player state object
+    // Helps make certain stats more robust (rely on stat title rather than index)
+    const username = profile.username
+    const rank = profile.competitive.rank
+    const level = profile.level
+    const playTime = profile.playtime.competitive
+    const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
+    const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
+    const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
+    const topHero = stats.top_heroes.competitive[0].hero
 
     // Set the assosciated profile to local component state
-    this.setState({ profile: profile })
-    this.setState({ stats: customStats })
+    this.setState({
+      player: {
+        username,
+        rank,
+        level,
+        playTime,
+        healing,
+        heroDamage,
+        eliminations,
+        topHero
+      }
+    })
 
-    console.log('this.state.stats after all', this.state.stats)
-    console.log('this.state.profile', this.state.profile)
+    console.log('this.state.player', this.state.player)
   }
 
   loadInGridTiles = () => {
@@ -88,7 +102,7 @@ class MainContent extends Component {
   }
 
   render () {
-    const ready = this.state && this.state.profile && this.state.stats
+    const ready = this.state && this.state.player
 
     ready && this.removeLoaderFromDom()
     ready && this.loadInGridTiles()
@@ -107,37 +121,37 @@ class MainContent extends Component {
           <div className='grid'>
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Name:</h1>
-              <h1 className='header header--secondary'>{this.state.profile.username}</h1>
+              <h1 className='header header--secondary'>{this.state.player.username}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Rank:</h1>
               <h1 className='header header--secondary'>
-                {this.state.profile.competitive.rank || 'Unplaced'}
+                {this.state.player.rank || 'Unplaced'}
               </h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Level:</h1>
-              <h1 className='header header--secondary'>{this.state.profile.level}</h1>
+              <h1 className='header header--secondary'>{this.state.player.level}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Playtime:</h1>
-              <h1 className='header header--secondary'>{this.state.profile.playtime.competitive}</h1>
+              <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Top hero:</h1>
-              <h1 className='header header--secondary'>{this.state.stats.top_heroes.competitive[0].hero}</h1>
+              <h1 className='header header--secondary'>{this.state.player.topHero}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Healing:</h1>
-              <h1 className='header header--secondary'>{this.state.stats.custom.healing}</h1>
+              <h1 className='header header--secondary'>{this.state.player.healing}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Hero damage:</h1>
-              <h1 className='header header--secondary'>{this.state.stats.custom.heroDamage}</h1>
+              <h1 className='header header--secondary'>{this.state.player.heroDamage}</h1>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Elims:</h1>
-              <h1 className='header header--secondary'>{this.state.stats.custom.eliminations}</h1>
+              <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
             <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.changeAccount}>
               <i className='fa fa-cog icon icon--setup' />

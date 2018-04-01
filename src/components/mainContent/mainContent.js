@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
+import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
 
 // import { newProfile } from '../../actions/addProfile'
@@ -16,6 +17,7 @@ class MainContent extends Component {
     super()
     this.state = {}
     this.addonStorage = window.chrome.storage
+    this.heroIcons = importImageFolder(require.context('../../images/hero-icons', false, /\.(png|jpe?g|svg)$/))
   }
 
   removeLoaderFromDom = () => {
@@ -138,7 +140,13 @@ class MainContent extends Component {
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Top hero:</h1>
-              <h1 className='header header--secondary'>{this.state.player.topHero}</h1>
+              <div className='center-inner-element hero-icon-container'>
+                <img
+                  src={this.heroIcons[`${this.state.player.topHero.toLowerCase()}.png`]}
+                  alt={`${this.state.player.topHero} spray`}
+                  className='hero-icon-container__hero-icon'
+                />
+              </div>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Healing:</h1>

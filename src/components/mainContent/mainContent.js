@@ -20,6 +20,9 @@ class MainContent extends Component {
     this.heroIcons = importImageFolder(require.context('../../images/hero-icons', false, /\.(png|jpe?g|svg)$/))
   }
 
+  /**
+   * Remove's the loader from the dom
+   */
   removeLoaderFromDom = () => {
     window.setTimeout(() => {
       const loaderWrapper = document.querySelector('.loader')
@@ -27,6 +30,9 @@ class MainContent extends Component {
     }, 1000)
   }
 
+  /**
+   * Requests new battle tag, clears data then requests and saves new data
+   */
   changeAccount = async () => {
     // Get new battletag from user
     let battleTag = prompt("So you're ready for a change? What's the new BattleTag?")
@@ -38,10 +44,21 @@ class MainContent extends Component {
     this.fetchAndSavePlayerData(battleTag)
   }
 
+  /**
+   * Clears all data saved in chrome storage
+   */
   clearPlayerData = async () => {
     await this.addonStorage.sync.clear()
   }
 
+  /**
+   * Saves the given battleTag to chrome storage
+   * Fetches data based on the given battleTag
+   * Saves the data to component state
+   *
+   * @param {String} battleTag
+   *        The battleTag used to grab new player data (in the form of 'MyName-1234')
+   */
   fetchAndSavePlayerData = async battleTag => {
     // Save the new player tag to chrome storage
     await this.addonStorage.sync.set({ battleTag: battleTag })
@@ -77,6 +94,10 @@ class MainContent extends Component {
     console.log('this.state.player', this.state.player)
   }
 
+  /**
+   * Fades in grid tiles by adding a class to all grid tiles
+   * based on an exponentally incremental formula
+   */
   loadInGridTiles = () => {
     window.setTimeout(() => {
       const tiles = document.getElementsByClassName('grid__tile')
@@ -91,6 +112,9 @@ class MainContent extends Component {
     }, 100)
   }
 
+  /**
+   * Occurs after component is loaded
+   */
   componentDidMount () {
     const hasAddonStorage = Boolean(this.addonStorage)
 
@@ -110,6 +134,9 @@ class MainContent extends Component {
     }
   }
 
+  /**
+   * Render the component!
+   */
   render () {
     const ready = this.state && this.state.player
 

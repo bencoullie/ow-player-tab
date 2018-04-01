@@ -31,10 +31,21 @@ class MainContent extends Component {
     // Get new battletag from user
     let battleTag = prompt("So you're ready for a change? What's the new BattleTag?")
 
+    // Clear the previous data from chrome storage
+    this.clearPlayerData()
+
+    // Grab player and save to both chrome storage and component state
     this.fetchAndSavePlayerData(battleTag)
   }
 
+  clearPlayerData = async () => {
+    await this.addonStorage.sync.clear()
+  }
+
   fetchAndSavePlayerData = async battleTag => {
+    // Save the new player tag to chrome storage
+    await this.addonStorage.sync.set({ battleTag: battleTag })
+
     // Get data with given battleTag
     const profile = await fetchProfile(battleTag)
     const stats = await fetchStats(battleTag)
@@ -92,9 +103,6 @@ class MainContent extends Component {
         if (!userHasSavedbattleTag) {
           // Get new battletag from user
           battleTag = prompt('What BattleTag inspires fear among your enemies?')
-
-          // And persist it in chrome addon storage
-          await this.addonStorage.sync.set({ battleTag: battleTag })
         }
 
         this.fetchAndSavePlayerData(battleTag)

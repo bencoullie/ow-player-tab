@@ -7,6 +7,7 @@ import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
+import restartApp from '../../helpers/restartApp'
 
 // import { newProfile } from '../../actions/addProfile'
 
@@ -15,6 +16,7 @@ import loadingAnimation from '../../images/ow-loader.gif'
 class MainContent extends Component {
   constructor () {
     super()
+
     this.state = {}
     this.addonStorage = window.chrome.storage
     this.heroIcons = importImageFolder(require.context('../../images/hero-icons', false, /\.(png|jpe?g|svg)$/))
@@ -41,7 +43,7 @@ class MainContent extends Component {
     this.clearPlayerData()
 
     // Grab player and save to both chrome storage and component state
-    this.fetchAndSavePlayerData(battleTag)
+    this.fetchAndSavePlayerData(battleTag, true)
   }
 
   /**
@@ -57,11 +59,19 @@ class MainContent extends Component {
    * Saves the data to component state
    *
    * @param {String} battleTag
-   *        The battleTag used to grab new player data (in the form of 'MyName-1234')
+   *        Required. The battleTag used to grab new player data (in the form of 'MyName-1234')
+   *
+   * @param {Boolean} restart
+   *        Optional. Specify if you want the app to reload after battleTag is set
    */
-  fetchAndSavePlayerData = async battleTag => {
+  fetchAndSavePlayerData = async (battleTag, restart = false) => {
     // Save the new player tag to chrome storage
     await this.addonStorage.sync.set({ battleTag: battleTag })
+
+    // Restart the app with the new battleTag
+    if (restart) {
+      restartApp()
+    }
 
     // Get data with given battleTag
     const profile = await fetchProfile(battleTag)
@@ -96,7 +106,7 @@ class MainContent extends Component {
 
   /**
    * Fades in grid tiles by adding a class to all grid tiles
-   * based on an exponentally incremental formula
+   * based on an exponentially incremental formula
    */
   loadInGridTiles = () => {
     window.setTimeout(() => {
@@ -121,10 +131,10 @@ class MainContent extends Component {
     if (hasAddonStorage) {
       this.addonStorage.sync.get('battleTag', async resultObject => {
         let battleTag = resultObject.battleTag
-        const userHasSavedbattleTag = Boolean(battleTag)
+        const userHasSavedBattleTag = Boolean(battleTag)
 
         // If the user has not saved a battle tag before
-        if (!userHasSavedbattleTag) {
+        if (!userHasSavedBattleTag) {
           // Get new battletag from user
           battleTag = prompt('What BattleTag inspires fear among your enemies?')
         }

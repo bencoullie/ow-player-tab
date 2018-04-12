@@ -165,14 +165,26 @@ class MainContent extends Component {
 
         {ready &&
           <div className='grid'>
+            <div className='grid__tile grid__tile--wide'>
+              <h1 className='header header--primary spanified-text'>Name:</h1>
+              <h1 className='header header--secondary spanified-text'>
+                {this.state.player.username}
+              </h1>
+            </div>
+            <div className='grid__tile grid__tile--wide'>
+              <h1 className='header header--primary spanified-text'>Rank:</h1>
+              <h1 className='header header--secondary spanified-text'>
+                {this.state.player.rank || 'Unplaced'}
+              </h1>
+            </div>
             <div className='grid__tile grid__tile--featured'>
-              <h1 className='header header--primary'>Name:</h1>
-              <h1 className='header header--secondary'>{this.state.player.username}</h1>
+              <h1 className='header header--primary'>Something:</h1>
+              <h1 className='header header--secondary'>Blah blah</h1>
             </div>
             <div className='grid__tile'>
-              <h1 className='header header--primary'>Rank:</h1>
+              <h1 className='header header--primary'>Something:</h1>
               <h1 className='header header--secondary'>
-                {this.state.player.rank || 'Unplaced'}
+                Blah blah
               </h1>
             </div>
             <div className='grid__tile'>
@@ -202,7 +214,7 @@ class MainContent extends Component {
               <h1 className='header header--secondary'>{this.state.player.heroDamage}</h1>
             </div>
             <div className='grid__tile'>
-              <h1 className='header header--primary'>Elims:</h1>
+              <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
             <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.changeAccount}>

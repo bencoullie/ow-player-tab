@@ -29,10 +29,24 @@
   line-height: 10px;
 }
 
+.header--secondary.spanified-text {
+  position: relative;
+  bottom: 10px;
+}
+
+.spanified-text {
+  display: inline-block;
+}
+
+.spanified-text + .spanified-text {
+  margin-left: 15px;
+}
+
 /* grids */
 
 .grid {
   display: grid;
+  grid-template-rows: 96px;
   grid-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
   padding: 10px;
@@ -50,6 +64,10 @@
 .grid__tile--featured {
   grid-column-end: span 2;
   grid-row-end: span 2;
+}
+
+.grid__tile--wide {
+  grid-column-end: span 2;
 }
 
 /* icons */

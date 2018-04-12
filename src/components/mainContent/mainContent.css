@@ -29,16 +29,16 @@
   line-height: 10px;
 }
 
-.header--secondary.spanified-text {
+.header--secondary.inline-text {
   position: relative;
   bottom: 10px;
 }
 
-.spanified-text {
+.inline-text {
   display: inline-block;
 }
 
-.spanified-text + .spanified-text {
+.inline-text + .inline-text {
   margin-left: 15px;
 }
 

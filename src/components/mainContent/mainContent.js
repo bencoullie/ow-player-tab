@@ -166,14 +166,14 @@ class MainContent extends Component {
         {ready &&
           <div className='grid'>
             <div className='grid__tile grid__tile--wide'>
-              <h1 className='header header--primary spanified-text'>Name:</h1>
-              <h1 className='header header--secondary spanified-text'>
+              <h1 className='header header--primary inline-text'>Name:</h1>
+              <h1 className='header header--secondary inline-text'>
                 {this.state.player.username}
               </h1>
             </div>
             <div className='grid__tile grid__tile--wide'>
-              <h1 className='header header--primary spanified-text'>Rank:</h1>
-              <h1 className='header header--secondary spanified-text'>
+              <h1 className='header header--primary inline-text'>Rank:</h1>
+              <h1 className='header header--secondary inline-text'>
                 {this.state.player.rank || 'Unplaced'}
               </h1>
             </div>

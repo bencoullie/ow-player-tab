@@ -2,6 +2,7 @@ import './mainContent.css'
 
 import React, { Component } from 'react'
 
+import { Progress } from 'reactstrap'
 // import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
@@ -87,12 +88,11 @@ class MainContent extends Component {
     const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     const topHero = stats.top_heroes.competitive[0].hero
 
-    // Chart data
+    // Win loss ratio
     const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
     const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
-    const chartData = {
-      winLoss: [gamesWon, gamesPlayed]
-    }
+    const winLoss = Math.round(gamesWon / gamesPlayed * 100)
+    console.log('winLoss', winLoss)
 
     // Set the associated player data to local component state
     this.setState({
@@ -105,7 +105,7 @@ class MainContent extends Component {
         heroDamage,
         eliminations,
         topHero,
-        chartData
+        winLoss
       }
     })
 
@@ -186,9 +186,14 @@ class MainContent extends Component {
               </h1>
             </div>
             <div className='grid__tile grid__tile--featured'>
-              <h1 className='header header--primary'>Win Loss:</h1>
-              <h1 className='header header--secondary'>Poop</h1>
-              <div className='center' />
+              <h1 className='header header--primary'>Stats:</h1>
+              <div>
+                <Progress
+                  color={this.state.player.winLoss > 50 ? 'success' : 'danger'}
+                  value={this.state.player.winLoss}
+                >{`${this.state.player.winLoss}%`}</Progress>
+                <h1 className='header header--secondary'>Win/Loss:</h1>
+              </div>
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Something:</h1>

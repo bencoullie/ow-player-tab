@@ -11,8 +11,6 @@ import restartApp from '../../helpers/restartApp'
 
 // import { newProfile } from '../../actions/addProfile'
 
-// import winLossChart from '../winLossChart/winLossChart'
-
 class MainContent extends Component {
   constructor () {
     super()
@@ -76,6 +74,8 @@ class MainContent extends Component {
     // Get data with given battleTag
     const profile = await fetchProfile(battleTag)
     const stats = await fetchStats(battleTag)
+    console.log('profile', profile)
+    console.log('stats', stats)
 
     // Grab the parts of the profile and stats we want
     const username = profile.username
@@ -87,7 +87,14 @@ class MainContent extends Component {
     const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     const topHero = stats.top_heroes.competitive[0].hero
 
-    // Set the assosciated player data to local component state
+    // Chart data
+    const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
+    const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
+    const chartData = {
+      winLoss: [gamesWon, gamesPlayed]
+    }
+
+    // Set the associated player data to local component state
     this.setState({
       player: {
         username,
@@ -97,7 +104,8 @@ class MainContent extends Component {
         healing,
         heroDamage,
         eliminations,
-        topHero
+        topHero,
+        chartData
       }
     })
 
@@ -178,8 +186,9 @@ class MainContent extends Component {
               </h1>
             </div>
             <div className='grid__tile grid__tile--featured'>
-              <h1 className='header header--primary'>Something:</h1>
-              <h1 className='header header--secondary'>Blah blah</h1>
+              <h1 className='header header--primary'>Win Loss:</h1>
+              <h1 className='header header--secondary'>Poop</h1>
+              <div className='center' />
             </div>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Something:</h1>
@@ -227,10 +236,3 @@ class MainContent extends Component {
 }
 
 export default MainContent
-
-// <div className='grid__tile'>
-//   <h1 className='header header--primary'>Win/loss:</h1>
-//   <div className='center'>
-//     <canvas id='winLossChart' />
-//   </div>
-// </div>

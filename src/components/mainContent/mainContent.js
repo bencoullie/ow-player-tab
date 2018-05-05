@@ -2,6 +2,7 @@ import './mainContent.css'
 
 import React, { Component } from 'react'
 
+import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
 // import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
@@ -231,9 +232,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
-            <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.changeAccount}>
-              <i className='fa fa-cog icon icon--setup' />
-            </div>
+            <AccountModal />
           </div>}
       </div>
     )

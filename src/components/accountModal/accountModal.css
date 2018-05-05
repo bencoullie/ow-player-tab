@@ -1,0 +1,17 @@
+.modal-title {
+	text-align: center;
+	font-size: 50px;
+	padding: 10px;
+	border-bottom: none;
+}
+
+.modal-content .close {
+	display: none;
+}
+
+.modal-content .header--primary {
+  padding: inherit;
+  border-bottom: none;
+	margin-top: 10px;
+	margin-bottom: 0px;
+}

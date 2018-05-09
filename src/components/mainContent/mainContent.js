@@ -91,9 +91,9 @@ class MainContent extends Component {
 
     // Win loss ratio
     const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
+    const gamesTied = stats.game.competitive.find(stat => stat.title === 'Games Tied').value
     const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
-    const winLoss = Math.round(gamesWon / gamesPlayed * 100)
-    console.log('winLoss', winLoss)
+    const winLoss = Math.round(gamesWon / (gamesPlayed - gamesTied) * 100)
 
     // Set the associated player data to local component state
     this.setState({

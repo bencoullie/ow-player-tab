@@ -89,9 +89,12 @@ class MainContent extends Component {
     const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     const topHero = stats.top_heroes.competitive[0].hero
 
+    // TODO: be a helper function!
     // Win loss ratio
     const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
-    const gamesTied = stats.game.competitive.find(stat => stat.title === 'Games Tied').value
+    const gamesTied = stats.game.competitive.find(stat => stat.title === 'Games Tied')
+      ? stats.game.competitive.find(stat => stat.title === 'Games Tied').value
+      : 0
     const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
     const winLoss = Math.round(gamesWon / (gamesPlayed - gamesTied) * 100)
 

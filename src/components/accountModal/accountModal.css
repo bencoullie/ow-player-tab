@@ -15,3 +15,12 @@
 	margin-top: 10px;
 	margin-bottom: 0px;
 }
+
+.accountInput:focus {
+	box-shadow: none;
+	border: 1px solid #6c757d;
+}
+
+form {
+	width: 100%;
+}

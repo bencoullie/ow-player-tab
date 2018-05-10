@@ -33,12 +33,9 @@ class MainContent extends Component {
   }
 
   /**
-   * Requests new battle tag, clears data then requests and saves new data
+   * Clears data then requests and saves new data
    */
-  changeAccount = async () => {
-    // Get new battletag from user
-    let battleTag = prompt("So you're ready for a change? What's the new BattleTag?")
-
+  changeAccount = async battleTag => {
     // Clear the previous data from chrome storage
     this.clearPlayerData()
 
@@ -235,7 +232,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
-            <AccountModal />
+            <AccountModal changeAccount={this.changeAccount} />
           </div>}
       </div>
     )

@@ -21,8 +21,6 @@ class MainContent extends Component {
     this.addonStorage = window.chrome.storage
 
     this.heroIcons = importImageFolder(require.context('../../images/hero-icons', false, /\.(png|jpe?g|svg)$/))
-
-    console.log('building in main')
   }
 
   /**
@@ -137,11 +135,9 @@ class MainContent extends Component {
   }
 
   openModal = () => {
-    console.log('modalIsOpen b', this.state.modalIsOpen)
     this.setState({
       modalIsOpen: true
     })
-    console.log('modalIsOpen a', this.state.modalIsOpen)
   }
 
   /**
@@ -157,11 +153,9 @@ class MainContent extends Component {
 
         // If the user has not saved a battle tag before
         if (!userHasSavedBattleTag) {
-          console.log('getting here1')
           // Open the modal to get a battletag from the user
           this.toggleModal()
         } else {
-          console.log('getting here2')
           this.fetchAndSavePlayerData(battleTag)
         }
       })

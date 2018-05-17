@@ -12,7 +12,6 @@ class AccountModal extends React.Component {
     this.state = {
       modal: props.modalIsOpen
     }
-    console.log('built!')
   }
 
   /**
@@ -46,12 +45,11 @@ class AccountModal extends React.Component {
 
   componentWillReceiveProps (newProps) {
     this.setState({
-      modal: newPropsmodalIsOpen
+      modal: newProps.modalIsOpen
     })
   }
 
   render () {
-    console.log('rendering!')
     return (
       <div>
         <Modal

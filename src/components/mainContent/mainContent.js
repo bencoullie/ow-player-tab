@@ -4,22 +4,25 @@ import React, { Component } from 'react'
 
 import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
-// import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
 import restartApp from '../../helpers/restartApp'
 
-// import { newProfile } from '../../actions/addProfile'
-
 class MainContent extends Component {
   constructor () {
     super()
 
-    this.state = {}
+    this.state = {
+      modalIsOpen: false
+    }
+
     this.addonStorage = window.chrome.storage
+
     this.heroIcons = importImageFolder(require.context('../../images/hero-icons', false, /\.(png|jpe?g|svg)$/))
+
+    console.log('building in main')
   }
 
   /**
@@ -28,7 +31,10 @@ class MainContent extends Component {
   removeLoaderFromDom = () => {
     window.setTimeout(() => {
       const loaderWrapper = document.querySelector('.loader')
-      document.querySelector('.background').removeChild(loaderWrapper)
+
+      if (loaderWrapper) {
+        document.querySelector('.background').removeChild(loaderWrapper)
+      }
     }, 1000)
   }
 
@@ -86,7 +92,6 @@ class MainContent extends Component {
     const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     const topHero = stats.top_heroes.competitive[0].hero
 
-    // TODO: be a helper function!
     // Win loss ratio
     const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
     const gamesTied = stats.game.competitive.find(stat => stat.title === 'Games Tied')
@@ -131,6 +136,14 @@ class MainContent extends Component {
     }, 100)
   }
 
+  openModal = () => {
+    console.log('modalIsOpen b', this.state.modalIsOpen)
+    this.setState({
+      modalIsOpen: true
+    })
+    console.log('modalIsOpen a', this.state.modalIsOpen)
+  }
+
   /**
    * Occurs after component is loaded
    */
@@ -144,11 +157,13 @@ class MainContent extends Component {
 
         // If the user has not saved a battle tag before
         if (!userHasSavedBattleTag) {
-          // Get new battletag from user
-          battleTag = prompt('What BattleTag inspires fear among your enemies?')
+          console.log('getting here1')
+          // Open the modal to get a battletag from the user
+          this.toggleModal()
+        } else {
+          console.log('getting here2')
+          this.fetchAndSavePlayerData(battleTag)
         }
-
-        this.fetchAndSavePlayerData(battleTag)
       })
     }
   }
@@ -232,8 +247,11 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
-            <AccountModal changeAccount={this.changeAccount} />
+            <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.openModal}>
+              <i className='fa fa-cog icon icon--setup' />
+            </div>
           </div>}
+        <AccountModal changeAccount={this.changeAccount} modalIsOpen={this.state.modalIsOpen} />
       </div>
     )
   }

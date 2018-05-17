@@ -2,21 +2,7 @@ import 'reactstrap'
 import '../mainContent/mainContent.css'
 import './accountModal.css'
 
-import {
-  Button,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Label,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader
-} from 'reactstrap'
+import { Button, Form, Input, InputGroup, InputGroupAddon, Modal, ModalFooter, ModalHeader } from 'reactstrap'
 
 import React from 'react'
 
@@ -24,8 +10,9 @@ class AccountModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      modal: false
+      modal: props.modalIsOpen
     }
+    console.log('built!')
   }
 
   /**
@@ -53,11 +40,20 @@ class AccountModal extends React.Component {
     this.props.changeAccount(battleTag)
   }
 
-  render () {
-    return (
-      <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.toggle}>
-        <i className='fa fa-cog icon icon--setup' />
+  componentDidMount () {
+    console.log('this.props.modalIsOpen in modal', this.props.modalIsOpen)
+  }
 
+  componentWillReceiveProps (newProps) {
+    this.setState({
+      modal: newPropsmodalIsOpen
+    })
+  }
+
+  render () {
+    console.log('rendering!')
+    return (
+      <div>
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}

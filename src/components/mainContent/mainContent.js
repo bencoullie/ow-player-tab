@@ -4,11 +4,14 @@ import React, { Component } from 'react'
 
 import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
+import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
 import restartApp from '../../helpers/restartApp'
+import setPlayer from '../../actions/setPlayer'
+import stripCommasFromNumbers from '../../helpers/stripCommasFromNumbers'
 
 class MainContent extends Component {
   constructor () {
@@ -98,6 +101,10 @@ class MainContent extends Component {
     const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
     const winLoss = Math.round(gamesWon / (gamesPlayed - gamesTied) * 100)
 
+    // Kill per death
+    const deaths = stats.combat.competitive.find(stat => stat.title === 'Deaths').value
+    const killPerDeath = (stripCommasFromNumbers(eliminations) / stripCommasFromNumbers(deaths)).toFixed(1)
+
     // Set the associated player data to local component state
     this.setState({
       player: {
@@ -109,7 +116,8 @@ class MainContent extends Component {
         heroDamage,
         eliminations,
         topHero,
-        winLoss
+        winLoss,
+        killPerDeath
       }
     })
 
@@ -198,17 +206,17 @@ class MainContent extends Component {
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
+                <h1 className='header header--secondary'>Win/Loss:</h1>
                 <Progress
                   color={this.state.player.winLoss > 50 ? 'success' : 'danger'}
                   value={this.state.player.winLoss}
                 >{`${this.state.player.winLoss}%`}</Progress>
-                <h1 className='header header--secondary'>Win/Loss:</h1>
               </div>
             </div>
             <div className='grid__tile'>
-              <h1 className='header header--primary'>Something:</h1>
+              <h1 className='header header--primary'>KPD:</h1>
               <h1 className='header header--secondary'>
-                Blah blah
+                {this.state.player.killPerDeath}
               </h1>
             </div>
             <div className='grid__tile'>
@@ -251,4 +259,29 @@ class MainContent extends Component {
   }
 }
 
-export default MainContent
+// this.setPlayer({
+//   username,
+//   rank,
+//   level,
+//   playTime,
+//   healing,
+//   heroDamage,
+//   eliminations,
+//   topHero,
+//   winLoss,
+//   killPerDeath
+// })
+//
+// const mapStateToProps = state => {
+//   return {
+//     player: state.player
+//   }
+// }
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setPlayer: newPlayer => dispatch(setPlayer(newPlayer))
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(MainContent)

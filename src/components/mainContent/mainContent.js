@@ -4,11 +4,13 @@ import React, { Component } from 'react'
 
 import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
+import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
 import restartApp from '../../helpers/restartApp'
+import stripCommasFromNumbers from '../../helpers/stripCommasFromNumbers'
 
 class MainContent extends Component {
   constructor () {
@@ -87,7 +89,6 @@ class MainContent extends Component {
     const playTime = profile.playtime.competitive
     const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
     const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
-    const eliminations = stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     const topHero = stats.top_heroes.competitive[0].hero
 
     // Win loss ratio
@@ -97,6 +98,15 @@ class MainContent extends Component {
       : 0
     const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
     const winLoss = Math.round(gamesWon / (gamesPlayed - gamesTied) * 100)
+
+    // Kill per death
+    const eliminations = stripCommasFromNumbers(
+      stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
+    )
+    const deaths = stripCommasFromNumbers(stats.combat.competitive.find(stat => stat.title === 'Deaths').value)
+    const killPerDeath = (eliminations / deaths).toFixed(1)
+    const moreDeathsThanKills = eliminations > deaths
+    const killPerDeathRatio = eliminations / (deaths + eliminations) * 100
 
     // Set the associated player data to local component state
     this.setState({
@@ -109,7 +119,9 @@ class MainContent extends Component {
         heroDamage,
         eliminations,
         topHero,
-        winLoss
+        winLoss,
+        killPerDeath,
+        killPerDeathRatio
       }
     })
 
@@ -198,17 +210,22 @@ class MainContent extends Component {
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
+                <h1 className='header header--secondary'>Win Loss:</h1>
                 <Progress
                   color={this.state.player.winLoss > 50 ? 'success' : 'danger'}
                   value={this.state.player.winLoss}
                 >{`${this.state.player.winLoss}%`}</Progress>
-                <h1 className='header header--secondary'>Win/Loss:</h1>
+                <h1 className='header header--secondary'>Kill Death:</h1>
+                <Progress multi>
+                  <Progress bar color='success' value={this.state.player.killPerDeathRatio} />
+                  <Progress bar color='danger' value={100 - this.state.player.killPerDeathRatio} />
+                </Progress>
               </div>
             </div>
             <div className='grid__tile'>
-              <h1 className='header header--primary'>Something:</h1>
+              <h1 className='header header--primary'>KPD:</h1>
               <h1 className='header header--secondary'>
-                Blah blah
+                {this.state.player.killPerDeath}
               </h1>
             </div>
             <div className='grid__tile'>
@@ -252,3 +269,32 @@ class MainContent extends Component {
 }
 
 export default MainContent
+
+// import setPlayer from '../../actions/setPlayer'
+//
+// this.setPlayer({
+//   username,
+//   rank,
+//   level,
+//   playTime,
+//   healing,
+//   heroDamage,
+//   eliminations,
+//   topHero,
+//   winLoss,
+//   killPerDeath
+// })
+//
+// const mapStateToProps = state => {
+//   return {
+//     player: state.player
+//   }
+// }
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setPlayer: newPlayer => dispatch(setPlayer(newPlayer))
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(MainContent)

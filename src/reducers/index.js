@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import profile from './profile'
+import player from './player'
 
 export default combineReducers({
-  profile
+  player
 })

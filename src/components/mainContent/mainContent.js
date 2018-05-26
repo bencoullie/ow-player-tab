@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 
 import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
-import { connect } from 'react-redux'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
@@ -105,8 +104,18 @@ class MainContent extends Component {
     )
     const deaths = stripCommasFromNumbers(stats.combat.competitive.find(stat => stat.title === 'Deaths').value)
     const killPerDeath = (eliminations / deaths).toFixed(1)
-    const moreDeathsThanKills = eliminations > deaths
-    const killPerDeathRatio = eliminations / (deaths + eliminations) * 100
+    const killPerDeathRatio = Math.round(eliminations / (deaths + eliminations) * 100)
+
+    // Healing vs damage ratio\
+    let healingVsDamageRatio
+    let healingVsDamageTitle
+    if (healing > heroDamage) {
+      healingVsDamageTitle = 'Healing vs Damage'
+      healingVsDamageRatio = Math.round(stripCommasFromNumbers(heroDamage) / stripCommasFromNumbers(healing) * 100)
+    } else {
+      healingVsDamageTitle = 'Damage vs Healing'
+      healingVsDamageRatio = Math.round(stripCommasFromNumbers(healing) / stripCommasFromNumbers(heroDamage) * 100)
+    }
 
     // Set the associated player data to local component state
     this.setState({
@@ -121,7 +130,9 @@ class MainContent extends Component {
         topHero,
         winLoss,
         killPerDeath,
-        killPerDeathRatio
+        killPerDeathRatio,
+        healingVsDamageRatio,
+        healingVsDamageTitle
       }
     })
 
@@ -210,15 +221,28 @@ class MainContent extends Component {
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
-                <h1 className='header header--secondary'>Win/Loss:</h1>
-                <Progress
-                  color={this.state.player.winLoss > 50 ? 'success' : 'danger'}
-                  value={this.state.player.winLoss}
-                >{`${this.state.player.winLoss}%`}</Progress>
-                <h1 className='header header--secondary'>Kill Death:</h1>
+                <h1 className='header header--secondary mt-4'>Win vs Loss:</h1>
                 <Progress multi>
-                  <Progress bar color='success' value={this.state.player.killPerDeathRatio} />
-                  <Progress bar color='danger' value={100 - this.state.player.killPerDeathRatio} />
+                  <Progress bar color='success' value={this.state.player.winLoss}>
+                    {this.state.player.winLoss}%
+                  </Progress>
+                  <Progress bar color='warning' value={100 - this.state.player.winLoss} />
+                </Progress>
+
+                <h1 className='header header--secondary mt-4'>Kill vs Death:</h1>
+                <Progress multi>
+                  <Progress bar color='success' value={this.state.player.killPerDeathRatio}>
+                    {this.state.player.killPerDeathRatio}%
+                  </Progress>
+                  <Progress bar color='warning' value={100 - this.state.player.killPerDeathRatio} />
+                </Progress>
+
+                <h1 className='header header--secondary mt-4'>{this.state.player.healingVsDamageTitle}:</h1>
+                <Progress multi>
+                  <Progress bar color='success' value={this.state.player.healingVsDamageRatio}>
+                    {this.state.player.healingVsDamageRatio}%
+                  </Progress>
+                  <Progress bar color='warning' value={100 - this.state.player.healingVsDamageRatio} />
                 </Progress>
               </div>
             </div>
@@ -271,6 +295,7 @@ class MainContent extends Component {
 export default MainContent
 
 // import setPlayer from '../../actions/setPlayer'
+// import { connect } from 'react-redux'
 //
 // this.setPlayer({
 //   username,

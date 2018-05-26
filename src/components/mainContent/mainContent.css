@@ -177,3 +177,18 @@
   transition: opacity 1s ease-in-out;
   opacity: 1;
 }
+
+/* graphs */
+
+.app-wrapper .bg-success {
+  background-color: #FCBD49 !important;
+}
+
+.app-wrapper .bg-warning {
+  background-color: #ccc !important;
+}
+
+.progress {
+  height: 1.4rem;
+  border: 1px solid #aaa;
+}

@@ -10,7 +10,7 @@
  */
 export default function importImageFolder (context) {
   let images = {}
-  context.keys().map((image, index) => {
+  context.keys().forEach((image, index) => {
     images[image.replace('./', '')] = context(image)
   })
   return images

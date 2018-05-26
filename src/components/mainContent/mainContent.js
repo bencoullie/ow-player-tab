@@ -103,18 +103,22 @@ class MainContent extends Component {
       stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
     )
     const deaths = stripCommasFromNumbers(stats.combat.competitive.find(stat => stat.title === 'Deaths').value)
+    const totalOfKillsAndDeaths = eliminations + deaths
     const killPerDeath = (eliminations / deaths).toFixed(1)
-    const killPerDeathRatio = Math.round(eliminations / (deaths + eliminations) * 100)
+    const killVsDeathRatio = Math.round(eliminations / totalOfKillsAndDeaths * 100)
 
-    // Healing vs damage ratio\
-    let healingVsDamageRatio
+    // Healing vs damage ratio
+    let greaterOfHealingVsDamage
     let healingVsDamageTitle
+    let healingNumber = stripCommasFromNumbers(healing)
+    let damageNumber = stripCommasFromNumbers(heroDamage)
+    let totalOfHealingAndDamage = healingNumber + damageNumber
     if (healing > heroDamage) {
       healingVsDamageTitle = 'Healing vs Damage'
-      healingVsDamageRatio = Math.round(stripCommasFromNumbers(heroDamage) / stripCommasFromNumbers(healing) * 100)
+      greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
     } else {
       healingVsDamageTitle = 'Damage vs Healing'
-      healingVsDamageRatio = Math.round(stripCommasFromNumbers(healing) / stripCommasFromNumbers(heroDamage) * 100)
+      greaterOfHealingVsDamage = Math.round(damageNumber / totalOfHealingAndDamage * 100)
     }
 
     // Set the associated player data to local component state
@@ -130,8 +134,8 @@ class MainContent extends Component {
         topHero,
         winLoss,
         killPerDeath,
-        killPerDeathRatio,
-        healingVsDamageRatio,
+        killVsDeathRatio,
+        greaterOfHealingVsDamage,
         healingVsDamageTitle
       }
     })
@@ -231,19 +235,22 @@ class MainContent extends Component {
 
                 <h1 className='header header--secondary mt-4'>Kill vs Death:</h1>
                 <Progress multi>
-                  <Progress bar color='success' value={this.state.player.killPerDeathRatio}>
-                    {this.state.player.killPerDeathRatio}%
+                  <Progress bar color='success' value={this.state.player.killVsDeathRatio}>
+                    {this.state.player.killVsDeathRatio}%
                   </Progress>
-                  <Progress bar color='warning' value={100 - this.state.player.killPerDeathRatio} />
+                  <Progress bar color='warning' value={100 - this.state.player.killVsDeathRatio} />
                 </Progress>
 
                 <h1 className='header header--secondary mt-4'>{this.state.player.healingVsDamageTitle}:</h1>
+
                 <Progress multi>
-                  <Progress bar color='success' value={this.state.player.healingVsDamageRatio}>
-                    {this.state.player.healingVsDamageRatio}%
+                  <Progress bar color='success' value={this.state.player.greaterOfHealingVsDamage}>
+                    {this.state.player.greaterOfHealingVsDamage}%
                   </Progress>
-                  <Progress bar color='warning' value={100 - this.state.player.healingVsDamageRatio} />
+
+                  <Progress bar color='warning' value={100 - this.state.player.greaterOfHealingVsDamage} />
                 </Progress>
+
               </div>
             </div>
             <div className='grid__tile'>

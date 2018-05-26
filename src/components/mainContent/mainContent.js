@@ -210,7 +210,7 @@ class MainContent extends Component {
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
-                <h1 className='header header--secondary'>Win Loss:</h1>
+                <h1 className='header header--secondary'>Win/Loss:</h1>
                 <Progress
                   color={this.state.player.winLoss > 50 ? 'success' : 'danger'}
                   value={this.state.player.winLoss}

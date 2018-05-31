@@ -113,12 +113,12 @@ class MainContent extends Component {
     let healingNumber = stripCommasFromNumbers(healing)
     let damageNumber = stripCommasFromNumbers(heroDamage)
     let totalOfHealingAndDamage = healingNumber + damageNumber
-    if (healing > heroDamage) {
-      healingVsDamageTitle = 'Healing vs Damage'
-      greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
-    } else {
+    if (damageNumber >= healingNumber) {
       healingVsDamageTitle = 'Damage vs Healing'
       greaterOfHealingVsDamage = Math.round(damageNumber / totalOfHealingAndDamage * 100)
+    } else {
+      healingVsDamageTitle = 'Healing vs Damage'
+      greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
     }
 
     // Set the associated player data to local component state

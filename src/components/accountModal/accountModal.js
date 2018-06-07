@@ -39,10 +39,6 @@ class AccountModal extends React.Component {
     this.props.changeAccount(battleTag)
   }
 
-  componentDidMount () {
-    console.log('this.props.modalIsOpen in modal', this.props.modalIsOpen)
-  }
-
   componentWillReceiveProps (newProps) {
     this.setState({
       modal: newProps.modalIsOpen

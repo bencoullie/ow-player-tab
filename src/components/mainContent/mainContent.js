@@ -88,7 +88,7 @@ class MainContent extends Component {
     const playTime = profile.playtime.competitive
     const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
     const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
-    const topHero = stats.top_heroes.competitive[0].hero
+    const topHero = stats.top_heroes.competitive.win_rate[0].hero
 
     // Win loss ratio
     const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
@@ -181,7 +181,7 @@ class MainContent extends Component {
         // If the user has not saved a battle tag before
         if (!userHasSavedBattleTag) {
           // Open the modal to get a battletag from the user
-          this.toggleModal()
+          this.openModal()
         } else {
           this.fetchAndSavePlayerData(battleTag)
         }

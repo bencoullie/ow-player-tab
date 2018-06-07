@@ -13,7 +13,8 @@
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.17",
     "reactstrap": "^5.0.0-beta.3",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "wired-tooltip": "^0.5.1"
   },
   "scripts": {
     "start": "react-scripts start",

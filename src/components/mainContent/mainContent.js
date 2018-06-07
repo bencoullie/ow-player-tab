@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 
 import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
+import { Tooltip } from 'react-tippy'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
@@ -268,7 +269,10 @@ class MainContent extends Component {
               <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
             </div>
             <div className='grid__tile'>
-              <h1 className='header header--primary'>Top hero:</h1>
+              <Tooltip title='Poopidy scoop!' position='top'>
+                <h1 className='header header--primary'>Top hero:</h1>
+              </Tooltip>
+
               <div className='center-inner-element hero-icon-container'>
                 <img
                   src={this.heroIcons[`${this.state.player.topHero.toLowerCase()}.png`]}

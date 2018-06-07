@@ -1,6 +1,7 @@
 import './index.css'
 import 'font-awesome/css/font-awesome.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-tippy/dist/tippy.css'
 
 import App from './App'
 import { Provider } from 'react-redux'

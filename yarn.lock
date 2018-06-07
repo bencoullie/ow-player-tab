@@ -2,23 +2,6 @@
 # yarn lockfile v1
 
 
-"@polymer/lit-element@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@polymer/lit-element/-/lit-element-0.5.1.tgz#ab1b21391787082023852e95e65e60015dfdaa00"
-  dependencies:
-    "@polymer/polymer" "^3.0.0-pre.13"
-    lit-html "^0.10.0"
-
-"@polymer/polymer@^3.0.0-pre.13":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@polymer/polymer/-/polymer-3.0.2.tgz#626e6f9fae9716b0962ce0211e21df242153eab2"
-  dependencies:
-    "@webcomponents/shadycss" "^1.2.0"
-
-"@webcomponents/shadycss@^1.2.0":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.2.1.tgz#6e4a88534657807c8398b4bc196d0ca492182d54"
-
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -3923,10 +3906,6 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-lit-html@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-0.10.0.tgz#1c56efc7513faa8e12d0a5564dc3c67ee28fd617"
-
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -6620,17 +6599,6 @@ widest-line@^1.0.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
-
-wired-lib@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/wired-lib/-/wired-lib-0.5.1.tgz#c575737046ec5ad827d155d37b963a36187b83b4"
-
-wired-tooltip@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/wired-tooltip/-/wired-tooltip-0.5.1.tgz#9781cbc3c9dd016f0e3a5da63f20ff722c37519f"
-  dependencies:
-    "@polymer/lit-element" "^0.5.1"
-    wired-lib "^0.5.1"
 
 wordwrap@0.0.2:
   version "0.0.2"

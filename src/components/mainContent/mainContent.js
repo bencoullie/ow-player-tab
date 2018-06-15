@@ -238,12 +238,14 @@ class MainContent extends Component {
                 {this.state.player.username}
               </h1>
             </div>
-            <div className='grid__tile grid__tile--wide'>
-              <h1 className='header header--primary inline-text'>Rank:</h1>
-              <h1 className='header header--secondary inline-text'>
-                {this.state.player.rank || 'Unplaced'}
-              </h1>
-            </div>
+            <Tooltip title='This app only looks at competitive games.' position='top'>
+              <div className='grid__tile grid__tile--wide'>
+                <h1 className='header header--primary inline-text'>Rank:</h1>
+                <h1 className='header header--secondary inline-text'>
+                  {this.state.player.rank || 'Unplaced'}
+                </h1>
+              </div>
+            </Tooltip>
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
@@ -285,11 +287,13 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Level:</h1>
               <h1 className='header header--secondary'>{this.state.player.level}</h1>
             </div>
-            <div className='grid__tile'>
-              <h1 className='header header--primary'>Playtime:</h1>
-              <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
-            </div>
-            <Tooltip title='Poopidy scoop!' position='top'>
+            <Tooltip title='This app only looks at competitive games.' position='top'>
+              <div className='grid__tile'>
+                <h1 className='header header--primary'>Playtime:</h1>
+                <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
+              </div>
+            </Tooltip>
+            <Tooltip title='This is calculated primarily by win rate.' position='top'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Top hero:</h1>
 
@@ -303,13 +307,16 @@ class MainContent extends Component {
               </div>
             </Tooltip>
             <div className='grid__tile'>
+              s
               <h1 className='header header--primary'>Healing:</h1>
               <h1 className='header header--secondary'>{this.state.player.healing}</h1>
             </div>
-            <div className='grid__tile'>
-              <h1 className='header header--primary'>Hero damage:</h1>
-              <h1 className='header header--secondary'>{this.state.player.heroDamage}</h1>
-            </div>
+            <Tooltip title="Hero damage. Rein's shield doesn't count mate." position='top'>
+              <div className='grid__tile'>
+                <h1 className='header header--primary'>Damage:</h1>
+                <h1 className='header header--secondary'>{this.state.player.heroDamage}</h1>
+              </div>
+            </Tooltip>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>

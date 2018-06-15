@@ -59,6 +59,7 @@
   border-radius: 3px;
   padding: 20px;
   opacity: 0;
+  height: 100%;
 }
 
 .grid__tile--featured {
@@ -161,6 +162,20 @@
     height: 220px;
     width: 220px;
   }
+}
+
+/* 404 state */
+
+.error {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+
+.error__image {
+  width: 500px;
+  height: 500px;
+  position: relative;
 }
 
 /* general */

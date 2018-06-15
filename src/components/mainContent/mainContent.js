@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import AccountModal from '../accountModal/accountModal'
 import { Progress } from 'reactstrap'
 import { Tooltip } from 'react-tippy'
+import errorAnimation from '../../images/dva-error.gif'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import importImageFolder from '../../helpers/importImageFolder'
@@ -17,7 +18,8 @@ class MainContent extends Component {
     super()
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      apiError: false
     }
 
     this.addonStorage = window.chrome.storage
@@ -77,71 +79,80 @@ class MainContent extends Component {
     }
 
     // Get data with given battleTag
-    const profile = await fetchProfile(battleTag)
-    const stats = await fetchStats(battleTag)
-    console.log('profile', profile)
-    console.log('stats', stats)
-
-    // Grab the parts of the profile and stats we want
-    const username = profile.username
-    const rank = profile.competitive.rank
-    const level = profile.level
-    const playTime = profile.playtime.competitive
-    const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
-    const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
-    const topHero = stats.top_heroes.competitive.win_rate[0].hero
-
-    // Win loss ratio
-    const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
-    const gamesTied = stats.game.competitive.find(stat => stat.title === 'Games Tied')
-      ? stats.game.competitive.find(stat => stat.title === 'Games Tied').value
-      : 0
-    const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
-    const winLoss = Math.round(gamesWon / (gamesPlayed - gamesTied) * 100)
-
-    // Kill per death
-    const eliminations = stripCommasFromNumbers(
-      stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
-    )
-    const deaths = stripCommasFromNumbers(stats.combat.competitive.find(stat => stat.title === 'Deaths').value)
-    const totalOfKillsAndDeaths = eliminations + deaths
-    const killPerDeath = (eliminations / deaths).toFixed(1)
-    const killVsDeathRatio = Math.round(eliminations / totalOfKillsAndDeaths * 100)
-
-    // Healing vs damage ratio
-    let greaterOfHealingVsDamage
-    let healingVsDamageTitle
-    let healingNumber = stripCommasFromNumbers(healing)
-    let damageNumber = stripCommasFromNumbers(heroDamage)
-    let totalOfHealingAndDamage = healingNumber + damageNumber
-    if (damageNumber >= healingNumber) {
-      healingVsDamageTitle = 'Damage vs Healing'
-      greaterOfHealingVsDamage = Math.round(damageNumber / totalOfHealingAndDamage * 100)
-    } else {
-      healingVsDamageTitle = 'Healing vs Damage'
-      greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
+    let profile
+    let stats
+    try {
+      profile = await fetchProfile(battleTag)
+      stats = await fetchStats(battleTag)
+    } catch (err) {
+      this.setState({
+        apiError: true
+      })
     }
 
-    // Set the associated player data to local component state
-    this.setState({
-      player: {
-        username,
-        rank,
-        level,
-        playTime,
-        healing,
-        heroDamage,
-        eliminations,
-        topHero,
-        winLoss,
-        killPerDeath,
-        killVsDeathRatio,
-        greaterOfHealingVsDamage,
-        healingVsDamageTitle
-      }
-    })
+    if (!this.state.apiError) {
+      console.log('no error!')
+      // Grab the parts of the profile and stats we want
+      const username = profile.username
+      const rank = profile.competitive.rank
+      const level = profile.level
+      const playTime = profile.playtime.competitive
+      const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
+      const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
+      const topHero = stats.top_heroes.competitive.win_rate[0].hero
 
-    console.log('this.state.player', this.state.player)
+      // Win loss ratio
+      const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
+      const gamesTied = stats.game.competitive.find(stat => stat.title === 'Games Tied')
+        ? stats.game.competitive.find(stat => stat.title === 'Games Tied').value
+        : 0
+      const gamesWon = stats.game.competitive.find(stat => stat.title === 'Games Won').value
+      const winLoss = Math.round(gamesWon / (gamesPlayed - gamesTied) * 100)
+
+      // Kill per death
+      const eliminations = stripCommasFromNumbers(
+        stats.combat.competitive.find(stat => stat.title === 'Eliminations').value
+      )
+      const deaths = stripCommasFromNumbers(stats.combat.competitive.find(stat => stat.title === 'Deaths').value)
+      const totalOfKillsAndDeaths = eliminations + deaths
+      const killPerDeath = (eliminations / deaths).toFixed(1)
+      const killVsDeathRatio = Math.round(eliminations / totalOfKillsAndDeaths * 100)
+
+      // Healing vs damage ratio
+      let greaterOfHealingVsDamage
+      let healingVsDamageTitle
+      let healingNumber = stripCommasFromNumbers(healing)
+      let damageNumber = stripCommasFromNumbers(heroDamage)
+      let totalOfHealingAndDamage = healingNumber + damageNumber
+      if (damageNumber >= healingNumber) {
+        healingVsDamageTitle = 'Damage vs Healing'
+        greaterOfHealingVsDamage = Math.round(damageNumber / totalOfHealingAndDamage * 100)
+      } else {
+        healingVsDamageTitle = 'Healing vs Damage'
+        greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
+      }
+
+      // Set the associated player data to local component state
+      this.setState({
+        player: {
+          username,
+          rank,
+          level,
+          playTime,
+          healing,
+          heroDamage,
+          eliminations,
+          topHero,
+          winLoss,
+          killPerDeath,
+          killVsDeathRatio,
+          greaterOfHealingVsDamage,
+          healingVsDamageTitle
+        }
+      })
+
+      console.log('this.state.player', this.state.player)
+    }
   }
 
   /**
@@ -194,22 +205,32 @@ class MainContent extends Component {
    * Render the component!
    */
   render () {
-    const ready = this.state && this.state.player
+    const isErrored = this.state.apiError
+    console.log('isErrored', isErrored)
 
-    ready && this.removeLoaderFromDom()
+    const ready = this.state && this.state.player
+    const isReadyOrErrored = ready || isErrored
+
     ready && this.loadInGridTiles()
+    isReadyOrErrored && this.removeLoaderFromDom()
 
     return (
-      <div className={'background ' + (!ready ? 'background--loading' : 'background--loaded')}>
+      <div className={'background ' + (ready || isErrored ? 'background--loaded' : 'background--loading')}>
         <div className='loader center-inner-element'>
           <img
             src={loadingAnimation}
-            className={'loader__image ' + (!ready ? 'loader__image--loading' : 'loader__image--loaded')}
+            className={'loader__image ' + (ready || isErrored ? 'loader__image--loaded' : 'loader__image--loading')}
             alt='loading animation'
           />
         </div>
 
-        {ready &&
+        {this.state.apiError &&
+          <div className='error center-inner-element'>
+            <img src={errorAnimation} className={'error__image'} alt='error animation' />
+          </div>}
+
+        {!isErrored &&
+          ready &&
           <div className='grid'>
             <div className='grid__tile grid__tile--wide'>
               <h1 className='header header--primary inline-text'>Name:</h1>
@@ -268,19 +289,19 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Playtime:</h1>
               <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
             </div>
-            <div className='grid__tile'>
-              <Tooltip title='Poopidy scoop!' position='top'>
+            <Tooltip title='Poopidy scoop!' position='top'>
+              <div className='grid__tile'>
                 <h1 className='header header--primary'>Top hero:</h1>
-              </Tooltip>
 
-              <div className='center-inner-element hero-icon-container'>
-                <img
-                  src={this.heroIcons[`${this.state.player.topHero.toLowerCase()}.png`]}
-                  alt={`${this.state.player.topHero} spray`}
-                  className='hero-icon-container__hero-icon'
-                />
+                <div className='center-inner-element hero-icon-container'>
+                  <img
+                    src={this.heroIcons[`${this.state.player.topHero.toLowerCase()}.png`]}
+                    alt={`${this.state.player.topHero} spray`}
+                    className='hero-icon-container__hero-icon'
+                  />
+                </div>
               </div>
-            </div>
+            </Tooltip>
             <div className='grid__tile'>
               <h1 className='header header--primary'>Healing:</h1>
               <h1 className='header header--secondary'>{this.state.player.healing}</h1>
@@ -297,6 +318,7 @@ class MainContent extends Component {
               <i className='fa fa-cog icon icon--setup' />
             </div>
           </div>}
+
         <AccountModal changeAccount={this.changeAccount} modalIsOpen={this.state.modalIsOpen} />
       </div>
     )

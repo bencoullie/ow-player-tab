@@ -84,6 +84,8 @@ class MainContent extends Component {
     try {
       profile = await fetchProfile(battleTag)
       stats = await fetchStats(battleTag)
+      console.log(profile)
+      console.log(stats)
     } catch (err) {
       this.setState({
         apiError: true
@@ -206,7 +208,6 @@ class MainContent extends Component {
    */
   render () {
     const isErrored = this.state.apiError
-    console.log('isErrored', isErrored)
 
     const ready = this.state && this.state.player
     const isReadyOrErrored = ready || isErrored
@@ -238,14 +239,12 @@ class MainContent extends Component {
                 {this.state.player.username}
               </h1>
             </div>
-            <Tooltip title='This app only looks at competitive games.' position='top'>
-              <div className='grid__tile grid__tile--wide'>
-                <h1 className='header header--primary inline-text'>Rank:</h1>
-                <h1 className='header header--secondary inline-text'>
-                  {this.state.player.rank || 'Unplaced'}
-                </h1>
-              </div>
-            </Tooltip>
+            <div className='grid__tile grid__tile--wide'>
+              <h1 className='header header--primary inline-text'>Rank:</h1>
+              <h1 className='header header--secondary inline-text'>
+                {this.state.player.rank || 'Unplaced'}
+              </h1>
+            </div>
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
@@ -307,7 +306,6 @@ class MainContent extends Component {
               </div>
             </Tooltip>
             <div className='grid__tile'>
-              s
               <h1 className='header header--primary'>Healing:</h1>
               <h1 className='header header--secondary'>{this.state.player.healing}</h1>
             </div>

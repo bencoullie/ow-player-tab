@@ -93,7 +93,6 @@ class MainContent extends Component {
     }
 
     if (!this.state.apiError) {
-      console.log('no error!')
       // Grab the parts of the profile and stats we want
       const username = profile.username
       const rank = profile.competitive.rank
@@ -227,7 +226,12 @@ class MainContent extends Component {
 
         {this.state.apiError &&
           <div className='error center-inner-element'>
-            <img src={errorAnimation} className={'error__image'} alt='error animation' />
+            <Tooltip
+              title='Suh fam 👋. Looks like something went wrong while trying to grab your stats. Please try again later.'
+              position='top'
+            >
+              <img src={errorAnimation} className={'error__image'} alt='error animation' />
+            </Tooltip>
           </div>}
 
         {!isErrored &&

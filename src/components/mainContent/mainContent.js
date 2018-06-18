@@ -88,7 +88,8 @@ class MainContent extends Component {
       console.log(stats)
     } catch (err) {
       this.setState({
-        apiError: true
+        apiError: true,
+        errorType: err
       })
     }
 
@@ -323,9 +324,11 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
-            <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.openModal}>
-              <i className='fa fa-cog icon icon--setup' />
-            </div>
+            <Tooltip title='Settings.' position='top'>
+              <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.openModal}>
+                <i className='fa fa-cog icon icon--setup' />
+              </div>
+            </Tooltip>
           </div>}
 
         <AccountModal changeAccount={this.changeAccount} modalIsOpen={this.state.modalIsOpen} />

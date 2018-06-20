@@ -295,13 +295,16 @@ class MainContent extends Component {
                 <h1 className='header header--secondary'>{this.state.player.level}</h1>
               </div>
             </Tooltip>
-            <Tooltip title='This app only looks at competitive games.' position='top'>
+            <Tooltip
+              title='As with all of these stats, playtime is just for the current competitive season.'
+              position='top'
+            >
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Playtime:</h1>
                 <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
               </div>
             </Tooltip>
-            <Tooltip title='This is calculated primarily by win rate.' position='top'>
+            <Tooltip title='Calculated primarily by win rate.' position='top'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Top hero:</h1>
 

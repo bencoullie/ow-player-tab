@@ -228,7 +228,7 @@ class MainContent extends Component {
         {this.state.apiError &&
           <div className='error center-inner-element'>
             <Tooltip
-              title='Suh fam 👋. Looks like something went wrong while trying to grab your stats. Please try again later.'
+              title='Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later.'
               position='top'
             >
               <img src={errorAnimation} className={'error__image'} alt='error animation' />
@@ -281,16 +281,20 @@ class MainContent extends Component {
 
               </div>
             </div>
-            <div className='grid__tile'>
-              <h1 className='header header--primary'>KPD:</h1>
-              <h1 className='header header--secondary'>
-                {this.state.player.killPerDeath}
-              </h1>
-            </div>
-            <div className='grid__tile'>
-              <h1 className='header header--primary'>Level:</h1>
-              <h1 className='header header--secondary'>{this.state.player.level}</h1>
-            </div>
+            <Tooltip title='Kills Per Death.' position='top'>
+              <div className='grid__tile'>
+                <h1 className='header header--primary'>KPD:</h1>
+                <h1 className='header header--secondary'>
+                  {this.state.player.killPerDeath}
+                </h1>
+              </div>
+            </Tooltip>
+            <Tooltip title='Useful as an indicator of in-game experience.' position='top'>
+              <div className='grid__tile'>
+                <h1 className='header header--primary'>Level:</h1>
+                <h1 className='header header--secondary'>{this.state.player.level}</h1>
+              </div>
+            </Tooltip>
             <Tooltip title='This app only looks at competitive games.' position='top'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Playtime:</h1>

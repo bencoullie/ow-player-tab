@@ -55,7 +55,7 @@
 }
 
 .grid__tile {
-  background: #F1F0EE;
+  background-color: #F1F0EE;
   border-radius: 3px;
   padding: 20px;
   opacity: 0;
@@ -189,7 +189,8 @@
 /* animators */
 
 .fade-in {
-  transition: opacity 1s ease-in-out;
+  transition: ;
+  transition: opacity 1s ease-in-out, background-color 0.4s;
   opacity: 1;
 }
 
@@ -206,4 +207,11 @@
 .progress {
   height: 1.4rem;
   border: 1px solid #aaa;
+}
+
+/* tooltips */
+
+div[data-tooltipped]:hover > .grid__tile {
+  background-color: #e5e4e0;
+  transition: background-color 0.4s;
 }

@@ -211,7 +211,8 @@
 
 /* tooltips */
 
-div[data-tooltipped]:hover > .grid__tile {
+div[data-tooltipped]:hover > .grid__tile,
+.grid__tile[data-tooltipped]:hover {
   background-color: #e5e4e0;
   transition: background-color 0.4s;
 }

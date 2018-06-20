@@ -227,10 +227,7 @@ class MainContent extends Component {
 
         {this.state.apiError &&
           <div className='error center-inner-element'>
-            <Tooltip
-              title='Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later.'
-              position='top'
-            >
+            <Tooltip title='Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later.'>
               <img src={errorAnimation} className={'error__image'} alt='error animation' />
             </Tooltip>
           </div>}
@@ -244,12 +241,18 @@ class MainContent extends Component {
                 {this.state.player.username}
               </h1>
             </div>
-            <div className='grid__tile grid__tile--wide'>
+            <div className='grid__tile'>
               <h1 className='header header--primary inline-text'>Rank:</h1>
               <h1 className='header header--secondary inline-text'>
                 {this.state.player.rank || 'Unplaced'}
               </h1>
             </div>
+            <Tooltip title='Useful as an indicator of in-game experience.'>
+              <div className='grid__tile'>
+                <h1 className='header header--primary inline-text'>Level:</h1>
+                <h1 className='header header--secondary inline-text'>{this.state.player.level}</h1>
+              </div>
+            </Tooltip>
             <div className='grid__tile grid__tile--featured'>
               <h1 className='header header--primary'>Stats:</h1>
               <div>
@@ -270,18 +273,23 @@ class MainContent extends Component {
                 </Progress>
 
                 <h1 className='header header--secondary mt-4'>{this.state.player.healingVsDamageTitle}:</h1>
-
                 <Progress multi>
                   <Progress bar color='success' value={this.state.player.greaterOfHealingVsDamage}>
                     {this.state.player.greaterOfHealingVsDamage}%
                   </Progress>
-
                   <Progress bar color='warning' value={100 - this.state.player.greaterOfHealingVsDamage} />
                 </Progress>
-
               </div>
             </div>
-            <Tooltip title='Kills Per Death.' position='top'>
+            <Tooltip title='Stats on page are for current competitive season only.'>
+              <div className='grid__tile'>
+                <h1 className='header header--primary'>Mode:</h1>
+                <h1 className='header header--secondary'>
+                  Competitive
+                </h1>
+              </div>
+            </Tooltip>
+            <Tooltip title='Kills Per Death.'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>KPD:</h1>
                 <h1 className='header header--secondary'>
@@ -289,22 +297,11 @@ class MainContent extends Component {
                 </h1>
               </div>
             </Tooltip>
-            <Tooltip title='Useful as an indicator of in-game experience.' position='top'>
-              <div className='grid__tile'>
-                <h1 className='header header--primary'>Level:</h1>
-                <h1 className='header header--secondary'>{this.state.player.level}</h1>
-              </div>
-            </Tooltip>
-            <Tooltip
-              title='As with all of these stats, playtime is just for the current competitive season.'
-              position='top'
-            >
-              <div className='grid__tile'>
-                <h1 className='header header--primary'>Playtime:</h1>
-                <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
-              </div>
-            </Tooltip>
-            <Tooltip title='Calculated primarily by win rate.' position='top'>
+            <div className='grid__tile'>
+              <h1 className='header header--primary'>Playtime:</h1>
+              <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
+            </div>
+            <Tooltip title='Calculated primarily by win rate.'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Top hero:</h1>
 
@@ -321,7 +318,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Healing:</h1>
               <h1 className='header header--secondary'>{this.state.player.healing}</h1>
             </div>
-            <Tooltip title="Hero damage. Rein's shield doesn't count mate." position='top'>
+            <Tooltip title="Hero damage. Rein's shield doesn't count mate.">
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Damage:</h1>
                 <h1 className='header header--secondary'>{this.state.player.heroDamage}</h1>
@@ -331,7 +328,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Eliminations:</h1>
               <h1 className='header header--secondary'>{this.state.player.eliminations}</h1>
             </div>
-            <Tooltip title='Settings.' position='top'>
+            <Tooltip title='Settings.'>
               <div className='grid__tile center-inner-element icon-wrapper js--config-box' onClick={this.openModal}>
                 <i className='fa fa-cog icon icon--setup' />
               </div>

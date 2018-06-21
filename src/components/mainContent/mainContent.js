@@ -120,6 +120,24 @@ class MainContent extends Component {
       const killPerDeath = (eliminations / deaths).toFixed(1)
       const killVsDeathRatio = Math.round(eliminations / totalOfKillsAndDeaths * 100)
 
+      // Kill per assist
+      const defensiveAssists = stripCommasFromNumbers(
+        stats.assists.competitive.find(stat => stat.title === 'Defensive Assists').value
+      )
+      const offensiveAssists = stripCommasFromNumbers(
+        stats.assists.competitive.find(stat => stat.title === 'Offensive Assists').value
+      )
+      const totalAssists = defensiveAssists + offensiveAssists
+      let killVsAssistsRatio
+      let killVsAssistTitle
+      if (eliminations >= totalAssists) {
+        killVsAssistTitle = 'Kill vs Assist'
+        killVsAssistsRatio = Math.round(eliminations / (eliminations + totalAssists) * 100)
+      } else {
+        killVsAssistTitle = 'Assist vs Kill'
+        killVsAssistsRatio = Math.round(totalAssists / (eliminations + totalAssists) * 100)
+      }
+
       // Healing vs damage ratio
       let greaterOfHealingVsDamage
       let healingVsDamageTitle
@@ -148,8 +166,10 @@ class MainContent extends Component {
           winLoss,
           killPerDeath,
           killVsDeathRatio,
+          killVsAssistsRatio,
           greaterOfHealingVsDamage,
-          healingVsDamageTitle
+          healingVsDamageTitle,
+          killVsAssistTitle
         }
       })
 
@@ -270,6 +290,14 @@ class MainContent extends Component {
                     {this.state.player.killVsDeathRatio}%
                   </Progress>
                   <Progress bar color='warning' value={100 - this.state.player.killVsDeathRatio} />
+                </Progress>
+
+                <h1 className='header header--secondary mt-4'>{this.state.player.killVsAssistTitle}</h1>
+                <Progress multi>
+                  <Progress bar color='success' value={this.state.player.killVsAssistsRatio}>
+                    {this.state.player.killVsAssistsRatio}%
+                  </Progress>
+                  <Progress bar color='warning' value={100 - this.state.player.killVsAssistsRatio} />
                 </Progress>
 
                 <h1 className='header header--secondary mt-4'>{this.state.player.healingVsDamageTitle}:</h1>

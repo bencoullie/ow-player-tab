@@ -94,6 +94,15 @@ class MainContent extends Component {
     }
 
     if (!this.state.apiError) {
+      // Don't try hydrate the page
+      if (profile.private) {
+        this.setState({
+          isPrivateProfile: true
+        })
+
+        return
+      }
+
       // Grab the parts of the profile and stats we want
       const username = profile.username
       const rank = profile.competitive.rank
@@ -101,7 +110,7 @@ class MainContent extends Component {
       const playTime = profile.playtime.competitive
       const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
       const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
-      const topHero = stats.top_heroes.competitive.win_rate[0].hero
+      // const topHero = stats.top_heroes.competitive.win_rate[0].hero
 
       // Win loss ratio
       const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
@@ -151,6 +160,36 @@ class MainContent extends Component {
         healingVsDamageTitle = 'Healing vs Damage'
         greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
       }
+
+      const getTimeInMinutesFromString = timeString => {
+        const numberPattern = /\d+/g
+        const isInMinutes = timeString.indexOf('minutes') > 0
+
+        const timeInMinutes = isInMinutes ? timeString.match(numberPattern) : timeString.match(numberPattern) * 60
+
+        return timeInMinutes
+      }
+
+      // Top hero calculator
+      const arrOfWeightedHeroScores = []
+      stats.top_heroes.competitive.win_rate.forEach(winRateHero => {
+        const heroName = winRateHero.hero
+        const winRateForHero = winRateHero.win_rate
+        const timePlayedAsHeroString = stats.top_heroes.competitive.played.find(
+          playedHero => playedHero.hero === heroName
+        ).played
+        const timePlayedAsHeroInMinutes = getTimeInMinutesFromString()
+
+        const portionOfTotalTimeAsHero = timePlayedAsHeroInMinutes / playTime
+        const weightedHeroScore = portionOfTotalTimeAsHero * winRateForHero
+        const statsForHero = {
+          heroName,
+          weightedHeroScore
+        }
+
+        arrOfWeightedHeroScores.push(statsForHero)
+      })
+      const topHero = Math.max.apply(Math, arrOfWeightedHeroScores.map(hero => hero.weightedHeroScore))
 
       // Set the associated player data to local component state
       this.setState({
@@ -228,12 +267,13 @@ class MainContent extends Component {
    */
   render () {
     const isErrored = this.state.apiError
+    const isPrivate = this.state.isPrivateProfile
 
     const ready = this.state && this.state.player
-    const isReadyOrErrored = ready || isErrored
+    const shouldRemoveLoader = ready || isErrored || isPrivate
 
     ready && this.loadInGridTiles()
-    isReadyOrErrored && this.removeLoaderFromDom()
+    shouldRemoveLoader && this.removeLoaderFromDom()
 
     return (
       <div className={'background ' + (ready || isErrored ? 'background--loaded' : 'background--loading')}>
@@ -245,9 +285,24 @@ class MainContent extends Component {
           />
         </div>
 
-        {this.state.apiError &&
+        {isErrored &&
           <div className='error center-inner-element'>
-            <Tooltip title='Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later.'>
+            <Tooltip
+              open='true'
+              theme='light'
+              title='Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later.'
+            >
+              <img src={errorAnimation} className={'error__image'} alt='error animation' />
+            </Tooltip>
+          </div>}
+
+        {isPrivate &&
+          <div className='error center-inner-element'>
+            <Tooltip
+              open='true'
+              theme='light'
+              title="Suh fam 👋 Looks like the profile you entered is set to private. If it's yours, please open Overwatch and go: Options &gt; Social &gt; Career Profile Visibility &gt; Public."
+            >
               <img src={errorAnimation} className={'error__image'} alt='error animation' />
             </Tooltip>
           </div>}
@@ -370,7 +425,6 @@ class MainContent extends Component {
 }
 
 export default MainContent
-
 // import setPlayer from '../../actions/setPlayer'
 // import { connect } from 'react-redux'
 //

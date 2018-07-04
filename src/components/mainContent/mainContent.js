@@ -8,6 +8,7 @@ import { Tooltip } from 'react-tippy'
 import errorAnimation from '../../images/dva-error.gif'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
+import getTimeInMinutesFromString from '../../helpers/getTimeInMinutesFromString'
 import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
 import restartApp from '../../helpers/restartApp'
@@ -84,8 +85,8 @@ class MainContent extends Component {
     try {
       profile = await fetchProfile(battleTag)
       stats = await fetchStats(battleTag)
-      console.log(profile)
-      console.log(stats)
+      console.log('profile', profile)
+      console.log('stats', stats)
     } catch (err) {
       this.setState({
         apiError: true,
@@ -110,7 +111,6 @@ class MainContent extends Component {
       const playTime = profile.playtime.competitive
       const healing = stats.assists.competitive.find(stat => stat.title === 'Healing Done').value
       const heroDamage = stats.combat.competitive.find(stat => stat.title === 'Hero Damage Done').value
-      // const topHero = stats.top_heroes.competitive.win_rate[0].hero
 
       // Win loss ratio
       const gamesPlayed = stats.game.competitive.find(stat => stat.title === 'Games Played').value
@@ -161,35 +161,37 @@ class MainContent extends Component {
         greaterOfHealingVsDamage = Math.round(healingNumber / totalOfHealingAndDamage * 100)
       }
 
-      const getTimeInMinutesFromString = timeString => {
-        const numberPattern = /\d+/g
-        const isInMinutes = timeString.indexOf('minutes') > 0
-
-        const timeInMinutes = isInMinutes ? timeString.match(numberPattern) : timeString.match(numberPattern) * 60
-
-        return timeInMinutes
-      }
-
       // Top hero calculator
+      let topHero
       const arrOfWeightedHeroScores = []
-      stats.top_heroes.competitive.win_rate.forEach(winRateHero => {
-        const heroName = winRateHero.hero
-        const winRateForHero = winRateHero.win_rate
-        const timePlayedAsHeroString = stats.top_heroes.competitive.played.find(
-          playedHero => playedHero.hero === heroName
-        ).played
-        const timePlayedAsHeroInMinutes = getTimeInMinutesFromString()
+      try {
+        stats.top_heroes.competitive.win_rate.forEach(winRateHero => {
+          const heroName = winRateHero.hero
+          const winRateForHero = winRateHero.win_rate
 
-        const portionOfTotalTimeAsHero = timePlayedAsHeroInMinutes / playTime
-        const weightedHeroScore = portionOfTotalTimeAsHero * winRateForHero
-        const statsForHero = {
-          heroName,
-          weightedHeroScore
-        }
+          const timePlayedAsHeroString = stats.top_heroes.competitive.played.find(
+            playedHero => playedHero.hero === heroName
+          ).played
 
-        arrOfWeightedHeroScores.push(statsForHero)
-      })
-      const topHero = Math.max.apply(Math, arrOfWeightedHeroScores.map(hero => hero.weightedHeroScore))
+          const timePlayedAsHeroInMinutes = getTimeInMinutesFromString(timePlayedAsHeroString)
+          const timePlayedInMinutes = getTimeInMinutesFromString(playTime)
+          const numericWinRateForHero = parseFloat(winRateForHero) / 100.0
+          const portionOfTotalTimeAsHero = timePlayedAsHeroInMinutes / timePlayedInMinutes
+          const weightedHeroScore = portionOfTotalTimeAsHero * numericWinRateForHero
+
+          const statsForHero = {
+            heroName,
+            weightedHeroScore
+          }
+
+          arrOfWeightedHeroScores.push(statsForHero)
+        })
+
+        const topWeightedScore = Math.max.apply(Math, arrOfWeightedHeroScores.map(hero => hero.weightedHeroScore))
+        topHero = arrOfWeightedHeroScores.find(hero => hero.weightedHeroScore === topWeightedScore).heroName
+      } catch (err) {
+        topHero = stats.top_heroes.competitive.win_rate[0].hero
+      }
 
       // Set the associated player data to local component state
       this.setState({

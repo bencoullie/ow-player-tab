@@ -386,7 +386,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Playtime:</h1>
               <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
             </div>
-            <Tooltip title='Calculated primarily by win rate.'>
+            <Tooltip title='Calculated as an average of win rate weighted by percentage of time played per hero.'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Top hero:</h1>
 

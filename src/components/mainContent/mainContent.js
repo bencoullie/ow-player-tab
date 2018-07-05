@@ -1,9 +1,9 @@
 import './mainContent.css'
 
+import { Button, Progress } from 'reactstrap'
 import React, { Component } from 'react'
 
 import AccountModal from '../accountModal/accountModal'
-import { Progress } from 'reactstrap'
 import { Tooltip } from 'react-tippy'
 import errorAnimation from '../../images/dva-error.gif'
 import fetchProfile from '../../services/profileFetcher'
@@ -130,21 +130,28 @@ class MainContent extends Component {
       const killVsDeathRatio = Math.round(eliminations / totalOfKillsAndDeaths * 100)
 
       // Kill per assist
-      const defensiveAssists = stripCommasFromNumbers(
-        stats.assists.competitive.find(stat => stat.title === 'Defensive Assists').value
-      )
-      const offensiveAssists = stripCommasFromNumbers(
-        stats.assists.competitive.find(stat => stat.title === 'Offensive Assists').value
-      )
-      const totalAssists = defensiveAssists + offensiveAssists
       let killVsAssistsRatio
       let killVsAssistTitle
-      if (eliminations >= totalAssists) {
-        killVsAssistTitle = 'Kill vs Assist'
-        killVsAssistsRatio = Math.round(eliminations / (eliminations + totalAssists) * 100)
-      } else {
-        killVsAssistTitle = 'Assist vs Kill'
-        killVsAssistsRatio = Math.round(totalAssists / (eliminations + totalAssists) * 100)
+      try {
+        const defensiveAssists = stripCommasFromNumbers(
+          stats.assists.competitive.find(stat => stat.title === 'Defensive Assists').value
+        )
+        const offensiveAssists = stripCommasFromNumbers(
+          stats.assists.competitive.find(stat => stat.title === 'Offensive Assists').value
+        )
+        const totalAssists = defensiveAssists + offensiveAssists
+
+        if (eliminations >= totalAssists) {
+          killVsAssistTitle = 'Kill vs Assist'
+          killVsAssistsRatio = Math.round(eliminations / (eliminations + totalAssists) * 100)
+        } else {
+          killVsAssistTitle = 'Assist vs Kill'
+          killVsAssistsRatio = Math.round(totalAssists / (eliminations + totalAssists) * 100)
+        }
+      } catch (err) {
+        this.setState({
+          issueType: 'KPAfail'
+        })
       }
 
       // Healing vs damage ratio
@@ -303,7 +310,15 @@ class MainContent extends Component {
             <Tooltip
               open='true'
               theme='light'
-              title="Suh fam 👋 Looks like the profile you entered is set to private. If it's yours, please open Overwatch and go: Options &gt; Social &gt; Career Profile Visibility &gt; Public."
+              interactive
+              html={
+                <div>
+                  <p>
+                    Suh fam 👋 Looks like the profile you entered is set to private. If it's yours, please open Overwatch and go: Options &gt; Social &gt; Career Profile Visibility &gt; Public.
+                  </p>
+                  <Button color='warning' onClick={this.openModal}>Change Account</Button>
+                </div>
+              }
             >
               <img src={errorAnimation} className={'error__image'} alt='error animation' />
             </Tooltip>
@@ -349,13 +364,16 @@ class MainContent extends Component {
                   <Progress bar color='warning' value={100 - this.state.player.killVsDeathRatio} />
                 </Progress>
 
-                <h1 className='header header--secondary mt-4'>{this.state.player.killVsAssistTitle}</h1>
-                <Progress multi>
-                  <Progress bar color='success' value={this.state.player.killVsAssistsRatio}>
-                    {this.state.player.killVsAssistsRatio}%
-                  </Progress>
-                  <Progress bar color='warning' value={100 - this.state.player.killVsAssistsRatio} />
-                </Progress>
+                {this.state.errorType === 'KPAfail' &&
+                  <div>
+                    <h1 className='header header--secondary mt-4'>{this.state.player.killVsAssistTitle}</h1>
+                    <Progress multi>
+                      <Progress bar color='success' value={this.state.player.killVsAssistsRatio}>
+                        {this.state.player.killVsAssistsRatio}%
+                      </Progress>
+                      <Progress bar color='warning' value={100 - this.state.player.killVsAssistsRatio} />
+                    </Progress>
+                  </div>}
 
                 <h1 className='header header--secondary mt-4'>{this.state.player.healingVsDamageTitle}:</h1>
                 <Progress multi>
@@ -386,7 +404,7 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Playtime:</h1>
               <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
             </div>
-            <Tooltip title='Calculated as an average of win rate weighted by percentage of time played per hero.'>
+            <Tooltip title='Calculated with reference to both playtime and win rate.'>
               <div className='grid__tile'>
                 <h1 className='header header--primary'>Top hero:</h1>
 

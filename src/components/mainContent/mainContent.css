@@ -216,3 +216,8 @@ div[data-tooltipped]:hover > .grid__tile,
   background-color: #e5e4e0;
   transition: background-color 0.4s;
 }
+
+body .tippy-popper .tippy-tooltip.light-theme {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}

@@ -8,7 +8,8 @@ import { Provider } from 'react-redux'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createReduxStore from './createReduxStore'
-import registerServiceWorker from './registerServiceWorker'
+
+// import registerServiceWorker from './registerServiceWorker'
 
 const store = createReduxStore()
 
@@ -19,4 +20,4 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-registerServiceWorker()
+// registerServiceWorker()

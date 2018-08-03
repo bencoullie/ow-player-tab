@@ -1,23 +1,22 @@
 {
-  "short_name": "OW Companion",
-  "name": "Overwatch Companion",
+  "short_name": "Overwatch Stats",
+  "name": "Overwatch Stats",
   "description": "Have a cry about your stats every time you open a new tab!",
   "manifest_version": 2,
   "icons": {
-    "16": "images/ow-icon-16.png",
-    "48": "images/ow-icon-48.png",
-    "128": "images/ow-icon-128.png"
+    "16": "ow-icon-16.png",
+    "48": "ow-icon-48.png",
+    "128": "ow-icon-128.png"
   },
   "browser_action": {
-    "default_icon": "images/ow-icon-128.png",
-    "default_title": "Overwatch Companion"
+    "default_icon": "ow-icon-128.png",
+    "default_title": "Overwatch Stats"
   },
-  "version": "1.0",
+  "version": "1.6",
   "permissions": [
     "management",
     "tabs",
-    "storage",
-    "chrome://favicon/"
+    "storage"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

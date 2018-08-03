@@ -85,6 +85,11 @@ class MainContent extends Component {
     try {
       profile = await fetchProfile(battleTag)
       stats = await fetchStats(battleTag)
+
+      if (!profile || !stats) {
+        throw new Error('Error or profile is empty or undefined.')
+      }
+
       console.log('profile', profile)
       console.log('stats', stats)
     } catch (err) {
@@ -217,7 +222,8 @@ class MainContent extends Component {
           killVsAssistsRatio,
           greaterOfHealingVsDamage,
           healingVsDamageTitle,
-          killVsAssistTitle
+          killVsAssistTitle,
+          imgName: topHero.toLowerCase().replace(/\s/g, '')
         }
       })
 
@@ -299,7 +305,15 @@ class MainContent extends Component {
             <Tooltip
               open='true'
               theme='light'
-              title='Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later.'
+              interactive
+              html={
+                <div>
+                  <p>
+                    Suh fam 👋 Looks like something went wrong while trying to grab your stats. Please try again later or change account.
+                  </p>
+                  <Button color='warning' onClick={this.openModal}>Change Account</Button>
+                </div>
+              }
             >
               <img src={errorAnimation} className={'error__image'} alt='error animation' />
             </Tooltip>
@@ -404,13 +418,15 @@ class MainContent extends Component {
               <h1 className='header header--primary'>Playtime:</h1>
               <h1 className='header header--secondary'>{this.state.player.playTime}</h1>
             </div>
-            <Tooltip title='Calculated with reference to both playtime and win rate.'>
+            <Tooltip title='Calculated with playtime and win rate.'>
               <div className='grid__tile'>
-                <h1 className='header header--primary'>Top hero:</h1>
+                <h1 className='header header--primary'>
+                  Top hero:
+                </h1>
 
                 <div className='center-inner-element hero-icon-container'>
                   <img
-                    src={this.heroIcons[`${this.state.player.topHero.toLowerCase()}.png`]}
+                    src={this.heroIcons[`${this.state.player.imgName}.png`]}
                     alt={`${this.state.player.topHero} spray`}
                     className='hero-icon-container__hero-icon'
                   />

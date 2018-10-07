@@ -9,7 +9,6 @@ import errorAnimation from '../../images/dva-error.gif'
 import fetchProfile from '../../services/profileFetcher'
 import fetchStats from '../../services/statsFetcher'
 import getTimeInMinutesFromString from '../../helpers/getTimeInMinutesFromString'
-import importImageFolder from '../../helpers/importImageFolder'
 import loadingAnimation from '../../images/ow-loader.gif'
 import restartApp from '../../helpers/restartApp'
 import stripCommasFromNumbers from '../../helpers/stripCommasFromNumbers'
@@ -24,8 +23,6 @@ class MainContent extends Component {
     }
 
     this.addonStorage = window.chrome.storage
-
-    this.heroIcons = importImageFolder(require.context('../../images/hero-icons', false, /\.(png|jpe?g|svg)$/))
   }
 
   /**
@@ -154,6 +151,7 @@ class MainContent extends Component {
           killVsAssistsRatio = Math.round(totalAssists / (eliminations + totalAssists) * 100)
         }
       } catch (err) {
+        console.log('err:', err)
         this.setState({
           issueType: 'KPAfail'
         })
@@ -175,6 +173,7 @@ class MainContent extends Component {
 
       // Top hero calculator
       let topHero
+      let topHeroImg
       const arrOfWeightedHeroScores = []
       try {
         stats.top_heroes.competitive.win_rate.forEach(winRateHero => {
@@ -201,8 +200,10 @@ class MainContent extends Component {
 
         const topWeightedScore = Math.max.apply(Math, arrOfWeightedHeroScores.map(hero => hero.weightedHeroScore))
         topHero = arrOfWeightedHeroScores.find(hero => hero.weightedHeroScore === topWeightedScore).heroName
+        topHeroImg = stats.top_heroes.competitive.win_rate[0].img
       } catch (err) {
         topHero = stats.top_heroes.competitive.win_rate[0].hero
+        topHeroImg = stats.top_heroes.competitive.win_rate[0].img
       }
 
       // Set the associated player data to local component state
@@ -223,7 +224,8 @@ class MainContent extends Component {
           greaterOfHealingVsDamage,
           healingVsDamageTitle,
           killVsAssistTitle,
-          imgName: topHero.toLowerCase().replace(/\s/g, '')
+          imgName: topHero.toLowerCase().replace(/\s/g, ''),
+          topHeroImg
         }
       })
 
@@ -426,8 +428,8 @@ class MainContent extends Component {
 
                 <div className='center-inner-element hero-icon-container'>
                   <img
-                    src={this.heroIcons[`${this.state.player.imgName}.png`]}
-                    alt={`${this.state.player.topHero} spray`}
+                    src={this.state.player.topHeroImg}
+                    alt={`Top hero: ${this.state.player.topHero}`}
                     className='hero-icon-container__hero-icon'
                   />
                 </div>

@@ -54,4 +54,8 @@ NB: Don't forget to build every time you make changes and want to see them refle
 
 If you find any bugs please report them here: https://github.com/bencoullie/ow-player-tab/issues 🙇
 
+## Chrome Extension Store Link
+
+https://chrome.google.com/webstore/detail/overwatch-stats/mambkijkhkmobjnhgiodghaaeoifaejn
+
 Enjoy <3

@@ -25,6 +25,23 @@ This is purely for fun and to inspire people to up their win rates.
 
 For sure! Feel free to make PRs/issues if you want.
 
+## Contributing
+
+1: Fork and clone this repo.
+2: Make your changes.
+3: Commit and create pull request!
+
+## To see your changes locally
+
+4: Run a `yarn`
+5: Run a `yarn build`
+6: Open chrome and manage your extensions (the page showing all your currently installed extensions)
+7: Drag and drop the `./build` directory into the window
+8: Make sure this is the only plugin controlling your 'new page' functionality
+9: Open a new page
+
+NB: Don't forget to build every time you make changes and want to see them reflected in the browser.
+
 ## I found an error!
 
 If you find any bugs please report them here: https://github.com/bencoullie/ow-player-tab/issues 🙇

@@ -1,9 +1,10 @@
 ## Overwatch Stats Chrome Addon!
+
+Have a cry about your stats every time you open a new tab!
+
 ![unnamed](https://user-images.githubusercontent.com/6733407/43624615-b3ca19aa-973c-11e8-9ec7-b0313a7331f8.jpg)
 
 ## What does it do?
-
-Have a cry about your stats every time you open a new tab!
 
 Essentially this app allows you to view the current stats for a public overwatch account from every new page.
 

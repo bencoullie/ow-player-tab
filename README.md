@@ -15,12 +15,6 @@ The stats on display will be the same as those available on https://playoverwatc
 
 I am using https://github.com/alfg/overwatch-api to get the public data.
 
-## Copyright info
-
-I do not own any of the characters, names, icons, images or data displayed in this app.
-
-This is purely for fun and to inspire people to up their win rates.
-
 ## Is it open source?
 
 For sure! Feel free to make PRs/issues if you want.
@@ -45,5 +39,13 @@ If you find any bugs please report them here: https://github.com/bencoullie/ow-p
 ## How do I use this?
 
 Install it here: https://chrome.google.com/webstore/detail/overwatch-stats/mambkijkhkmobjnhgiodghaaeoifaejn
+
+## Copyright info
+
+I do not own any of the characters, names, icons, images or data displayed in this app.
+
+This is purely for fun and to inspire people to up their win rates.
+
+---
 
 Enjoy <3
